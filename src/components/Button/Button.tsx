@@ -22,6 +22,9 @@ export const Button: React.FC<IButton> = ({
       color="primary"
       onClick={loading ? undefined : onClick}
       variant="contained"
+      sx={{
+        ...(loading && { cursor: "not-allowed" }),
+      }}
       {...props}
     >
       {loading ? <CircularProgress size={24} color="inherit" /> : children}

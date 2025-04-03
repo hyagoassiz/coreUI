@@ -1,10 +1,21 @@
 import MenuIcon from "@mui/icons-material/Menu";
-import { IconButton, styled, Typography } from "@mui/material";
+import {
+  Avatar,
+  Box,
+  IconButton,
+  Menu,
+  MenuItem,
+  styled,
+  Tooltip,
+  Typography,
+} from "@mui/material";
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import useAppBar from "./hooks/useAppBar";
 import { useDispatch } from "react-redux";
 import { setDrawerOpen } from "../../redux/drawerSlice";
+import { useState } from "react";
+import { options } from "./constants/constants";
 
 interface AppBarProps extends MuiAppBarProps {
   open?: boolean;
@@ -13,6 +24,16 @@ export const AppBar: React.FC = () => {
   const { drawer } = useAppBar();
 
   const dispatch = useDispatch();
+
+  const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
+
+  const handleCloseUserMenu = () => {
+    setAnchorElUser(null);
+  };
+
+  const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorElUser(event.currentTarget);
+  };
 
   const AppBar = styled(MuiAppBar, {
     shouldForwardProp: (prop) => prop !== "open",
@@ -54,8 +75,56 @@ export const AppBar: React.FC = () => {
           <MenuIcon />
         </IconButton>
         <Typography variant="h6" noWrap component="div">
-          Persistent drawer
+          CoreUI
         </Typography>
+
+        {/* Box para empurrar os elementos para a direita */}
+        <Box sx={{ flexGrow: 1 }} />
+
+        <Tooltip title="Configurações">
+          <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+            <Avatar
+              alt="user.displayName"
+              sx={{ width: 42, height: 42 }}
+              src="d"
+            />
+          </IconButton>
+        </Tooltip>
+
+        <Menu
+          sx={{ mt: "45px" }}
+          id="menu-appbar"
+          anchorEl={anchorElUser}
+          anchorOrigin={{
+            vertical: "top",
+            horizontal: "right",
+          }}
+          keepMounted
+          transformOrigin={{
+            vertical: "top",
+            horizontal: "right",
+          }}
+          open={Boolean(anchorElUser)}
+          onClose={handleCloseUserMenu}
+        >
+          {options.map((option) => (
+            <MenuItem
+              sx={{ gap: 1 }}
+              key={option.name}
+              onClick={async () => {
+                // navigate(option.route);
+                // if (option.function) {
+                //   await option.function();
+                // }
+              }}
+            >
+              {option.icon}
+              <Typography sx={{ fontSize: "12px" }} textAlign="center">
+                {option.name}
+              </Typography>
+            </MenuItem>
+          ))}
+        </Menu>
       </Toolbar>
     </AppBar>
   );
