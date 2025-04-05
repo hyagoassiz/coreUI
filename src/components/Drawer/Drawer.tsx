@@ -14,7 +14,6 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import { AppBar } from "../AppBar";
 import useDrawer from "./hooks/useDrawer";
 import { setDrawerOpen } from "../../redux/drawerSlice";
 import { useDispatch } from "react-redux";
@@ -92,8 +91,6 @@ export const Drawer: React.FC<IDrawer> = ({ children }) => {
 
   return (
     <Box sx={{ display: "flex" }}>
-      <AppBar />
-
       <MuiDrawer
         sx={{
           width: isMobile ? "100vw" : drawer.drawerWidth,
@@ -101,6 +98,7 @@ export const Drawer: React.FC<IDrawer> = ({ children }) => {
           "& .MuiDrawer-paper": {
             width: isMobile ? "100vw" : drawer.drawerWidth,
             boxSizing: "border-box",
+            backgroundColor: theme.palette.text.primary,
           },
         }}
         variant={isMobile ? "temporary" : "persistent"}
@@ -119,7 +117,9 @@ export const Drawer: React.FC<IDrawer> = ({ children }) => {
         </DrawerHeader>
         {rotas.map((categoria, index) => (
           <Box key={index}>
-            <ListSubheader>{categoria.categoria}</ListSubheader>
+            <ListSubheader sx={{ backgroundColor: theme.palette.text.primary }}>
+              {categoria.categoria}
+            </ListSubheader>
             {categoria.rotas.map((rota) => (
               <List key={rota.name} disablePadding>
                 <ListItem
@@ -131,10 +131,14 @@ export const Drawer: React.FC<IDrawer> = ({ children }) => {
                     handleSelect(rota.route);
                   }}
                   sx={{
+                    backgroundColor:
+                      opcaoSelecionada === rota.route
+                        ? theme.palette.primary.dark
+                        : "",
                     color:
                       opcaoSelecionada === rota.route
                         ? theme.palette.secondary.light
-                        : "",
+                        : theme.palette.secondary.light,
                     "&:hover": {
                       opacity: "80%",
                     },
@@ -144,6 +148,10 @@ export const Drawer: React.FC<IDrawer> = ({ children }) => {
                     <ListItemIcon
                       sx={{
                         minWidth: 40,
+                        color:
+                          opcaoSelecionada === rota.route
+                            ? theme.palette.primary.contrastText
+                            : theme.palette.secondary.main,
                       }}
                     >
                       {rota.icon}

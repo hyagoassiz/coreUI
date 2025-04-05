@@ -1,9 +1,8 @@
-import { Grid } from "@mui/material";
+import { Button, Grid } from "@mui/material";
 import { Controller } from "react-hook-form";
 import { StyledDivider, StyledLink, StyledTextField } from "../styles";
 import { AuthLayout } from "../../../layouts/AuthLayout";
 import { useRegistrarNome } from "./hooks/useRegistrarNome";
-import { Button } from "../../../components/Button";
 
 export const PersonalInfo: React.FC = () => {
   const {
@@ -50,10 +49,7 @@ export const PersonalInfo: React.FC = () => {
       </Grid>
 
       <Grid item xs={12}>
-        <Button
-          onClick={registrarNomeForm.handleSubmit(onSubmit)}
-          loading={isPending}
-        >
+        <Button loading={isPending} variant="contained" onClick={onSubmit}>
           SALVAR
         </Button>
       </Grid>

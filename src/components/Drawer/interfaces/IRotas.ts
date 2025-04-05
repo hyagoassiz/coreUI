@@ -1,7 +1,7 @@
 import { ReactElement } from "react";
 
 export interface IRotas {
-  categoria: "Categoria 1" | "Categoria 2" | "Categoria 3" | "News" | "";
+  categoria: "Categoria" | "News" | "";
   rotas: {
     name: string;
     route: string;

@@ -1,4 +1,4 @@
-import { Checkbox, Grid } from "@mui/material";
+import { Button, Checkbox, Grid } from "@mui/material";
 import { Controller } from "react-hook-form";
 import { useLogin } from "./hooks/useLogin";
 import {
@@ -8,7 +8,6 @@ import {
   StyledTextField,
 } from "../styles";
 import { AuthLayout } from "../../../layouts/AuthLayout";
-import { Button } from "../../../components/Button";
 
 export const Login: React.FC = () => {
   const { onSubmit, handleNavigate, isPending, handleKeyDown, loginForm } =
@@ -77,7 +76,7 @@ export const Login: React.FC = () => {
       </Grid>
 
       <Grid item xs={12}>
-        <Button onClick={loginForm.handleSubmit(onSubmit)} loading={isPending}>
+        <Button loading={isPending} variant="contained" onClick={onSubmit}>
           Entrar
         </Button>
       </Grid>

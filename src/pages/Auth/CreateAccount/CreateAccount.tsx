@@ -1,9 +1,8 @@
-import { Grid } from "@mui/material";
+import { Button, Grid } from "@mui/material";
 import { Controller } from "react-hook-form";
 import { useCadastro } from "./hooks/useCadastro";
 import { StyledDivider, StyledLink, StyledTextField } from "../styles";
 import { AuthLayout } from "../../../layouts/AuthLayout";
-import { Button } from "../../../components/Button";
 
 export const CreateAccount: React.FC = () => {
   const { cadastroForm, handleNavigate, onSubmit, handleKeyDown, isPending } =
@@ -99,10 +98,7 @@ export const CreateAccount: React.FC = () => {
         />
       </Grid>
       <Grid item xs={12}>
-        <Button
-          onClick={cadastroForm.handleSubmit(onSubmit)}
-          loading={isPending}
-        >
+        <Button loading={isPending} variant="contained" onClick={onSubmit}>
           CRIAR CONTA
         </Button>
       </Grid>
