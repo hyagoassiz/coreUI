@@ -1,7 +1,7 @@
 import { Alert, Snackbar as MuiSnackBar } from "@mui/material";
 import useSnackBar from "./hooks/useSnackBar";
 
-const SnackBar: React.FC = () => {
+export const SnackBar: React.FC = () => {
   const { snackBar, handleCloseSnackBar } = useSnackBar();
 
   return (
@@ -23,5 +23,3 @@ const SnackBar: React.FC = () => {
     </>
   );
 };
-
-export default SnackBar;

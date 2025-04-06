@@ -1,43 +1,68 @@
 import { useForm, UseFormReturn } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import * as PATHS from "../../../../routes/paths";
+import { loginWithEmailAndPassword } from "../../../../api/Auth/loginWithEmailAndPassword";
+import { auth } from "../../../../firebaseConfig";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { showSnackBar } from "../../../../redux/snackBarSlice";
 
 interface IUseLogin {
-  loginForm: UseFormReturn<any>;
-  isPending: boolean;
-  onSubmit(): void;
-  handleNavigate(): void;
+  isLoading: boolean;
+  loginForm: UseFormReturn<ILoginApi>;
   handleKeyDown(event: React.KeyboardEvent<HTMLDivElement>): void;
+  onCreateAccount(): void;
+  submitLoginForm(): void;
 }
 
 export const useLogin = (): IUseLogin => {
-  const loginForm = useForm<any>();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const loginForm = useForm<ILoginApi>();
 
   const navigate = useNavigate();
 
-  const isPending = true;
+  const dispatch = useDispatch();
 
-  const onSubmit = (): void => {
-    loginForm.handleSubmit((data) => {
-      console.log(data);
-    })();
-  };
-
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>): void => {
-    if (event.key === "Enter") {
-      loginForm.handleSubmit(onSubmit)();
+  function handleKeyDown(event: React.KeyboardEvent<HTMLDivElement>): void {
+    if (isLoading) {
+      return;
     }
-  };
 
-  const handleNavigate = (): void => {
+    if (event.key === "Enter") {
+      submitLoginForm();
+    }
+  }
+
+  function onCreateAccount(): void {
     navigate(PATHS.AUTH.CREATE);
-  };
+  }
+
+  function submitLoginForm(): void {
+    loginForm.handleSubmit(async (data) => {
+      try {
+        setIsLoading(true);
+        const payload: ILoginApi = {
+          auth: auth,
+          email: data.email,
+          password: data.password,
+        };
+
+        await loginWithEmailAndPassword(payload);
+      } catch (error) {
+        console.error(error);
+        dispatch(showSnackBar({ message: String(error), type: "error" }));
+      } finally {
+        setIsLoading(false);
+      }
+    })();
+  }
 
   return {
+    isLoading,
     loginForm,
-    isPending,
-    onSubmit,
-    handleNavigate,
     handleKeyDown,
+    onCreateAccount,
+    submitLoginForm,
   };
 };

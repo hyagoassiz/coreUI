@@ -10,8 +10,13 @@ import {
 import { AuthLayout } from "../../../layouts/AuthLayout";
 
 export const Login: React.FC = () => {
-  const { onSubmit, handleNavigate, isPending, handleKeyDown, loginForm } =
-    useLogin();
+  const {
+    isLoading,
+    loginForm,
+    handleKeyDown,
+    onCreateAccount,
+    submitLoginForm,
+  } = useLogin();
 
   return (
     <AuthLayout titleRoute="Login" onKeyDown={handleKeyDown}>
@@ -36,7 +41,7 @@ export const Login: React.FC = () => {
               }}
               required
               fullWidth
-              disabled={isPending}
+              disabled={isLoading}
               error={!!fieldState.error}
             />
           )}
@@ -61,7 +66,7 @@ export const Login: React.FC = () => {
               required
               error={!!fieldState.error}
               fullWidth
-              disabled={isPending}
+              disabled={isLoading}
             />
           )}
         />
@@ -71,12 +76,17 @@ export const Login: React.FC = () => {
         <StyledFormControlLabel
           control={<Checkbox value="remember" color="secondary" />}
           label="Lembrar de mim"
-          disabled={isPending}
+          disabled={isLoading}
         />
       </Grid>
 
       <Grid item xs={12}>
-        <Button loading={isPending} variant="contained" onClick={onSubmit}>
+        <Button
+          loading={isLoading}
+          variant="contained"
+          onClick={submitLoginForm}
+          sx={{ width: "100%", height: "40px" }}
+        >
           Entrar
         </Button>
       </Grid>
@@ -86,7 +96,7 @@ export const Login: React.FC = () => {
       <Grid item>
         <Grid item xs>
           <StyledLink
-            onClick={handleNavigate}
+            onClick={onCreateAccount}
             variant="body2"
             sx={{ cursor: "pointer" }}
           >

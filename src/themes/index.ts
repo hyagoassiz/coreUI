@@ -1,1 +1,1 @@
-export * from "./LightTheme";
+export * from "./Theme";
