@@ -2,8 +2,6 @@ import { createTheme } from "@mui/material";
 
 export const Theme = createTheme({
   palette: {
-    mode: "light",
-
     primary: {
       main: "#424874", // azul escuro (destaques, botões principais)
       dark: "#2D324F", // versão mais escura para hover

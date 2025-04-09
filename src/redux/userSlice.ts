@@ -6,23 +6,9 @@ const initialState: IUser = {
   displayName: "",
   email: "",
   emailVerified: false,
-  isAnonymous: false,
-  metadata: { creationTime: undefined, lastSignInTime: undefined },
   photoURL: "",
   phoneNumber: null,
-  providerData: [],
   providerId: "",
-  refreshToken: "",
-  tenantId: null,
-  delete: async () => Promise.resolve(),
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  getIdToken: async (_forceRefresh?: boolean) => Promise.resolve(""),
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  getIdTokenResult: async (_forceRefresh?: boolean) =>
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    Promise.resolve({} as any),
-  reload: async () => Promise.resolve(),
-  toJSON: () => ({}),
 };
 
 const userSlice = createSlice({

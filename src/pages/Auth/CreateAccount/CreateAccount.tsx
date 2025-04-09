@@ -1,19 +1,24 @@
 import { Button, Grid } from "@mui/material";
 import { Controller } from "react-hook-form";
-import { useCadastro } from "./hooks/useCadastro";
+import { useCreateAccount } from "./hooks/useCreateAccount";
 import { StyledDivider, StyledLink, StyledTextField } from "../styles";
 import { AuthLayout } from "../../../layouts/AuthLayout";
 
 export const CreateAccount: React.FC = () => {
-  const { cadastroForm, handleNavigate, onSubmit, handleKeyDown, isPending } =
-    useCadastro();
+  const {
+    createAccountForm,
+    isLoading,
+    handleKeyDown,
+    navigateToLogin,
+    submitCreateAccountForm,
+  } = useCreateAccount();
 
   return (
     <AuthLayout titleRoute="Criar Conta" onKeyDown={handleKeyDown}>
       <Grid item xs={12}>
         <Controller
           name="email"
-          control={cadastroForm.control}
+          control={createAccountForm.control}
           rules={{
             required: true,
           }}
@@ -29,7 +34,7 @@ export const CreateAccount: React.FC = () => {
                 maxLength: 50,
               }}
               required
-              disabled={isPending}
+              disabled={isLoading}
               fullWidth
               error={!!fieldState.error}
               helperText={fieldState.error?.message}
@@ -40,7 +45,7 @@ export const CreateAccount: React.FC = () => {
       <Grid item xs={12}>
         <Controller
           name="password"
-          control={cadastroForm.control}
+          control={createAccountForm.control}
           rules={{ required: true, minLength: 6 }}
           render={({ field, fieldState }) => (
             <StyledTextField
@@ -59,7 +64,7 @@ export const CreateAccount: React.FC = () => {
                 maxLength: 30,
               }}
               required
-              disabled={isPending}
+              disabled={isLoading}
               fullWidth
               error={!!fieldState.error}
               helperText={fieldState.error?.message}
@@ -70,7 +75,7 @@ export const CreateAccount: React.FC = () => {
       <Grid item xs={12}>
         <Controller
           name="confirmPassword"
-          control={cadastroForm.control}
+          control={createAccountForm.control}
           rules={{ required: true, minLength: 6 }}
           render={({ field, fieldState }) => (
             <StyledTextField
@@ -89,7 +94,7 @@ export const CreateAccount: React.FC = () => {
                 maxLength: 30,
               }}
               required
-              disabled={isPending}
+              disabled={isLoading}
               fullWidth
               error={!!fieldState.error}
               helperText={fieldState.error?.message}
@@ -98,7 +103,12 @@ export const CreateAccount: React.FC = () => {
         />
       </Grid>
       <Grid item xs={12}>
-        <Button loading={isPending} variant="contained" onClick={onSubmit}>
+        <Button
+          loading={isLoading}
+          variant="contained"
+          sx={{ width: "100%", height: "40px" }}
+          onClick={submitCreateAccountForm}
+        >
           CRIAR CONTA
         </Button>
       </Grid>
@@ -108,7 +118,7 @@ export const CreateAccount: React.FC = () => {
       <Grid item>
         <Grid item xs>
           <StyledLink
-            onClick={handleNavigate}
+            onClick={navigateToLogin}
             variant="body2"
             sx={{ cursor: "pointer" }}
           >

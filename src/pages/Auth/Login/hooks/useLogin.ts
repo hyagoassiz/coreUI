@@ -4,8 +4,7 @@ import * as PATHS from "../../../../routes/paths";
 import { loginWithEmailAndPassword } from "../../../../api/Auth/loginWithEmailAndPassword";
 import { auth } from "../../../../firebaseConfig";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { showSnackBar } from "../../../../redux/snackBarSlice";
+import { useNotification } from "../../../../hooks/useNotification";
 
 interface IUseLogin {
   isLoading: boolean;
@@ -22,12 +21,10 @@ export const useLogin = (): IUseLogin => {
 
   const navigate = useNavigate();
 
-  const dispatch = useDispatch();
+  const { handleShowSnackBar } = useNotification();
 
   function handleKeyDown(event: React.KeyboardEvent<HTMLDivElement>): void {
-    if (isLoading) {
-      return;
-    }
+    if (isLoading) return;
 
     if (event.key === "Enter") {
       submitLoginForm();
@@ -49,9 +46,11 @@ export const useLogin = (): IUseLogin => {
         };
 
         await loginWithEmailAndPassword(payload);
+
+        navigate(PATHS.DASHBOARD.LIST);
       } catch (error) {
         console.error(error);
-        dispatch(showSnackBar({ message: String(error), type: "error" }));
+        handleShowSnackBar(String(error), "error");
       } finally {
         setIsLoading(false);
       }

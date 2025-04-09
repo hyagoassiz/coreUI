@@ -5,5 +5,15 @@ export async function loginWithEmailAndPassword({
   email,
   password,
 }: ILoginApi): Promise<UserCredential> {
-  return await signInWithEmailAndPassword(auth, email, password);
+  try {
+    const userCredential = await signInWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
+    return userCredential;
+  } catch (error) {
+    console.error("Erro ao fazer login:", error);
+    throw error;
+  }
 }
