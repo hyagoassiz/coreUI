@@ -1,5 +1,5 @@
 const REPOSITORIO = {
-  LIST: "/x",
+  LIST: "/core-ui",
 };
 
 export const AUTH = {
@@ -18,6 +18,6 @@ export const NEWS = {
   LIST_2: `${REPOSITORIO.LIST}/route-2`,
 };
 
-export const PAGE_1 = {
-  LIST: `${REPOSITORIO.LIST}/page-1`,
+export const ABOUT = {
+  LIST: `${REPOSITORIO.LIST}/sobre`,
 };

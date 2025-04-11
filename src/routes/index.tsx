@@ -1,7 +1,6 @@
 import { HashRouter, Routes, Route, Outlet, Navigate } from "react-router-dom";
 import * as PATHS from "./paths";
 import { PageLayout } from "../layouts/PageLayout/PageLayout";
-import { Page1 } from "../pages/Page1";
 import { Dashboard } from "../pages/Dashboard";
 import { Route1, Route2 } from "../pages/News";
 import {
@@ -11,6 +10,7 @@ import {
   Verification,
 } from "../pages/Auth";
 import { ProtectedRoute } from "../components/ProtectedRoute";
+import { About } from "../pages/About";
 
 const LayoutWrapper = () => (
   <PageLayout>
@@ -51,10 +51,10 @@ export const AppRoutes = () => {
             }
           />
           <Route
-            path={PATHS.PAGE_1.LIST}
+            path={PATHS.ABOUT.LIST}
             element={
               <ProtectedRoute>
-                <Page1 />
+                <About />
               </ProtectedRoute>
             }
           />
