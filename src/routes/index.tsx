@@ -2,7 +2,6 @@ import { HashRouter, Routes, Route, Outlet, Navigate } from "react-router-dom";
 import * as PATHS from "./paths";
 import { PageLayout } from "../layouts/PageLayout/PageLayout";
 import { Dashboard } from "../pages/Dashboard";
-import { Route1, Route2 } from "../pages/News";
 import {
   CreateAccount,
   Login,
@@ -11,6 +10,7 @@ import {
 } from "../pages/Auth";
 import { ProtectedRoute } from "../components/ProtectedRoute";
 import { About } from "../pages/About";
+import { Products } from "../pages/Products";
 
 const LayoutWrapper = () => (
   <PageLayout>
@@ -50,6 +50,16 @@ export const AppRoutes = () => {
               </ProtectedRoute>
             }
           />
+
+          <Route
+            path={PATHS.PRODUCTS.LIST}
+            element={
+              <ProtectedRoute>
+                <Products />
+              </ProtectedRoute>
+            }
+          />
+
           <Route
             path={PATHS.ABOUT.LIST}
             element={
@@ -58,22 +68,7 @@ export const AppRoutes = () => {
               </ProtectedRoute>
             }
           />
-          <Route
-            path={PATHS.NEWS.LIST}
-            element={
-              <ProtectedRoute>
-                <Route1 />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path={PATHS.NEWS.LIST_2}
-            element={
-              <ProtectedRoute>
-                <Route2 />
-              </ProtectedRoute>
-            }
-          />
+
           <Route path="*" element={<Navigate to={PATHS.DASHBOARD.LIST} />} />
         </Route>
       </Routes>

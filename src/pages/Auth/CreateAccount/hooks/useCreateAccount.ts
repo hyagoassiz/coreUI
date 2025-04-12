@@ -6,6 +6,8 @@ import { useState } from "react";
 import { createAccountWithEmailAndPassword } from "../../../../api/Auth/createAccountWithEmailAndPassword";
 import { auth } from "../../../../firebaseConfig";
 import { useNotification } from "../../../../hooks/useNotification";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { createAccountSchema } from "../schema/createAccountSchema";
 
 interface IUseCreateAccount {
   createAccountForm: UseFormReturn<ICadastro>;
@@ -18,7 +20,9 @@ interface IUseCreateAccount {
 export const useCreateAccount = (): IUseCreateAccount => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const createAccountForm = useForm<ICadastro>();
+  const createAccountForm = useForm<ICadastro>({
+    resolver: zodResolver(createAccountSchema),
+  });
 
   const { handleShowSnackBar } = useNotification();
 

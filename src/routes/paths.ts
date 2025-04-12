@@ -13,9 +13,8 @@ export const DASHBOARD = {
   LIST: `${REPOSITORIO.LIST}/dashboard`,
 };
 
-export const NEWS = {
-  LIST: `${REPOSITORIO.LIST}/route-1`,
-  LIST_2: `${REPOSITORIO.LIST}/route-2`,
+export const PRODUCTS = {
+  LIST: `${REPOSITORIO.LIST}/produtos`,
 };
 
 export const ABOUT = {
