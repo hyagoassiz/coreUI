@@ -1,5 +1,5 @@
 import { Typography } from "@mui/material";
-import { PageTitle } from "../../components/PageTitle";
+import { PageTitle } from "../../../components/PageTitle";
 
 export const About: React.FC = () => (
   <>

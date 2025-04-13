@@ -1,4 +1,4 @@
-import { MoreOptions } from "../../../components/MoreOptions";
+import { MoreOptions } from "../../../../components/MoreOptions";
 
 interface IMountData {
   products: any[];

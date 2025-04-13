@@ -1,12 +1,12 @@
 import { Button } from "@mui/material";
-import { DataTable } from "../../components/DataTable/DataTable";
-import { PageTitle } from "../../components/PageTitle";
-import { ToolbarContainer } from "../../components/ToolbarContainer";
 import { columns } from "./constants/constants";
 import { mountData } from "./utils/mountData";
 import { Add } from "@mui/icons-material";
-import useSearchBar from "../../hooks/useSearchBar";
 import { useMemo } from "react";
+import useSearchBar from "../../../hooks/useSearchBar";
+import { PageTitle } from "../../../components/PageTitle";
+import { ToolbarContainer } from "../../../components/ToolbarContainer";
+import { DataTable } from "../../../components/DataTable/DataTable";
 
 export const Products: React.FC = () => {
   const { searchBar, textoBusca } = useSearchBar({
