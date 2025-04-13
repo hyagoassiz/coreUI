@@ -1,8 +1,9 @@
-import { Button, Grid } from "@mui/material";
+import { Grid } from "@mui/material";
 import { Controller } from "react-hook-form";
 import { StyledDivider, StyledLink, StyledTextField } from "../styles";
 import { AuthLayout } from "../../../layouts/AuthLayout";
 import { usePersonalInfo } from "./hooks/usePersonalInfo";
+import { LoadingButton } from "@mui/lab";
 
 export const PersonalInfo: React.FC = () => {
   const {
@@ -49,7 +50,7 @@ export const PersonalInfo: React.FC = () => {
       </Grid>
 
       <Grid item xs={12}>
-        <Button
+        <LoadingButton
           loading={isLoading}
           variant="contained"
           size="large"
@@ -57,7 +58,7 @@ export const PersonalInfo: React.FC = () => {
           sx={{ width: "100%" }}
         >
           Confirmar
-        </Button>
+        </LoadingButton>
       </Grid>
       <Grid item xs={12}>
         <StyledDivider />
