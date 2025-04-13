@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import { RootState } from "../../../redux/store";
+import { IRootState } from "../../../redux/store";
 import { IDrawerProps } from "../../../interfaces";
 
 interface IUseAppBar {
@@ -7,7 +7,7 @@ interface IUseAppBar {
 }
 
 const useAppBar = (): IUseAppBar => {
-  const drawer = useSelector((state: RootState) => state.drawer);
+  const drawer = useSelector((state: IRootState) => state.drawer);
 
   return { drawer };
 };

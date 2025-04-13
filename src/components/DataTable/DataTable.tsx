@@ -1,4 +1,5 @@
 import {
+  Checkbox,
   Pagination,
   TableBody,
   TableContainer,
@@ -16,23 +17,89 @@ import {
   StyledTableHead,
 } from "./styles";
 import useDataTable from "./hooks/useDataTable";
+import { useState } from "react";
 import { IDataTableColumns } from "../../interfaces";
+
+type SelectionMode = "single" | "multiple";
 
 interface IDataTable {
   columns: IDataTableColumns[];
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   data: any[];
   textForEmptyData: string;
+  selectionMode?: SelectionMode;
+  rowKey?: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  selectedItems?: any[];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  onSelectionChange?: (selected: any[]) => void;
 }
 
 export const DataTable: React.FC<IDataTable> = ({
   columns,
   data,
   textForEmptyData,
+  selectionMode,
+  rowKey = "id",
+  selectedItems,
+  onSelectionChange,
 }) => {
   const { paginatedData, totalPages, page, setPage } = useDataTable({ data });
-
   const theme = useTheme();
+
+  const isSelectable =
+    selectionMode === "single" || selectionMode === "multiple";
+  const isSingleSelect = selectionMode === "single";
+  const isMultipleSelect = selectionMode === "multiple";
+
+  const isControlled =
+    selectedItems !== undefined && onSelectionChange !== undefined;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const [internalSelected, setInternalSelected] = useState<any[]>([]);
+  const selected = isControlled ? selectedItems! : internalSelected;
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const isRowSelected = (row: any) =>
+    selected.some((item) => item[rowKey] === row[rowKey]);
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const handleSelectionChange = (newSelected: any[]) => {
+    if (isControlled) {
+      onSelectionChange?.(newSelected);
+    } else {
+      setInternalSelected(newSelected);
+    }
+  };
+
+  const toggleSelectAll = () => {
+    if (!isMultipleSelect) return;
+    const allSelected = paginatedData.every((row) => isRowSelected(row));
+    const newSelected = allSelected
+      ? selected.filter(
+          (item) => !paginatedData.some((row) => row[rowKey] === item[rowKey])
+        )
+      : [...selected, ...paginatedData.filter((row) => !isRowSelected(row))];
+
+    handleSelectionChange(newSelected);
+  };
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const toggleRowSelection = (row: any) => {
+    if (isSingleSelect) {
+      handleSelectionChange([row]);
+    } else {
+      const alreadySelected = isRowSelected(row);
+      const newSelected = alreadySelected
+        ? selected.filter((item) => item[rowKey] !== row[rowKey])
+        : [...selected, row];
+
+      handleSelectionChange(newSelected);
+    }
+  };
+
+  const isAllSelected =
+    paginatedData.length > 0 &&
+    paginatedData.every((row) => isRowSelected(row));
 
   return (
     <>
@@ -40,6 +107,16 @@ export const DataTable: React.FC<IDataTable> = ({
         <Table size="small" stickyHeader aria-label="sticky table">
           <StyledTableHead>
             <TableRow>
+              {isSelectable && (
+                <StyledTableCellHead padding="checkbox">
+                  <Checkbox
+                    checked={isAllSelected}
+                    onChange={toggleSelectAll}
+                    inputProps={{ "aria-label": "select all rows" }}
+                    disabled={isSingleSelect}
+                  />
+                </StyledTableCellHead>
+              )}
               {columns.map((column) => (
                 <StyledTableCellHead size="small" key={column.key}>
                   {column.label}
@@ -52,7 +129,7 @@ export const DataTable: React.FC<IDataTable> = ({
             <TableBody>
               {paginatedData.map((row, index) => (
                 <TableRow
-                  key={index}
+                  key={row[rowKey] ?? index}
                   sx={{
                     backgroundColor: theme.palette.primary.contrastText,
                     "&:hover": {
@@ -60,13 +137,19 @@ export const DataTable: React.FC<IDataTable> = ({
                     },
                   }}
                 >
+                  {isSelectable && (
+                    <StyledTableCellBody padding="checkbox">
+                      <Checkbox
+                        checked={isRowSelected(row)}
+                        onChange={() => toggleRowSelection(row)}
+                      />
+                    </StyledTableCellBody>
+                  )}
                   {columns.map((column) => (
                     <StyledTableCellBody
                       size="small"
                       key={column.key}
-                      sx={{
-                        ...column?.style,
-                      }}
+                      sx={{ ...column?.style }}
                     >
                       {row[column.key]}
                     </StyledTableCellBody>
@@ -77,7 +160,9 @@ export const DataTable: React.FC<IDataTable> = ({
           ) : (
             <TableBody>
               <TableRow>
-                <StyledTableCellBody colSpan={columns.length}>
+                <StyledTableCellBody
+                  colSpan={columns.length + (isSelectable ? 1 : 0)}
+                >
                   <StyledBox>
                     <Icon color="warning" />
                     <Typography variant="body2">{textForEmptyData}</Typography>
@@ -88,10 +173,11 @@ export const DataTable: React.FC<IDataTable> = ({
           )}
         </Table>
       </TableContainer>
+
       {paginatedData.length > 0 && (
         <Footer spacing={2} sx={{ borderRadius: "0px 0px 8px 8px" }}>
           <Pagination
-            color="secondary"
+            color="standard"
             count={totalPages}
             page={page}
             onChange={(_, value) => setPage(value)}

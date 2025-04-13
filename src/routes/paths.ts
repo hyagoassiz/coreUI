@@ -20,3 +20,7 @@ export const PRODUCTS = {
 export const ABOUT = {
   LIST: `${REPOSITORIO.LIST}/sobre`,
 };
+
+export const SETTINGS = {
+  LIST: `${REPOSITORIO.LIST}/configuracoes`,
+};

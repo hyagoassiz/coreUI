@@ -106,7 +106,8 @@ export const CreateAccount: React.FC = () => {
         <Button
           loading={isLoading}
           variant="contained"
-          sx={{ width: "100%", height: "40px" }}
+          size="large"
+          sx={{ width: "100%" }}
           onClick={submitCreateAccountForm}
         >
           CRIAR CONTA

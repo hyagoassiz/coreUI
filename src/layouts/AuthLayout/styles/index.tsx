@@ -14,7 +14,6 @@ export const BoxContainer = styled(Box)(({ theme }) => ({
   flexDirection: "column",
   alignItems: "center",
   height: "auto",
-  minHeight: "400px",
   width: "350px",
   boxShadow: "0px 3px 5px rgba(0, 0, 0, 0.3)",
   padding: theme.spacing(4),

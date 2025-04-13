@@ -83,9 +83,10 @@ export const Login: React.FC = () => {
       <Grid item xs={12}>
         <Button
           loading={isLoading}
+          size="large"
           variant="contained"
           onClick={submitLoginForm}
-          sx={{ width: "100%", height: "40px" }}
+          sx={{ width: "100%" }}
         >
           Entrar
         </Button>

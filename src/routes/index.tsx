@@ -11,6 +11,7 @@ import {
 import { ProtectedRoute } from "../components/ProtectedRoute";
 import { About } from "../pages/About";
 import { Products } from "../pages/Products";
+import { Settings } from "../pages/Settings/Settings";
 
 const LayoutWrapper = () => (
   <PageLayout>
@@ -65,6 +66,15 @@ export const AppRoutes = () => {
             element={
               <ProtectedRoute>
                 <About />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path={PATHS.SETTINGS.LIST}
+            element={
+              <ProtectedRoute>
+                <Settings />
               </ProtectedRoute>
             }
           />

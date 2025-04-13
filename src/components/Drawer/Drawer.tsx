@@ -42,7 +42,7 @@ const Main = ({
           easing: theme.transitions.easing.sharp,
           duration: theme.transitions.duration.leavingScreen,
         }),
-        marginLeft: !isMobile && open ? 0 : !isMobile ? `-${240}px` : 0, // 👈 ajusta pro mobile e desktop
+        marginLeft: !isMobile && open ? 0 : !isMobile ? `-${240}px` : 0,
       }}
     >
       <DrawerHeader />

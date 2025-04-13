@@ -8,7 +8,7 @@ export const StyledTableHead = styled(TableHead)(({ theme }) => ({
 export const StyledTableCellHead = styled(TableCell)(({ theme }) => ({
   fontWeight: 600,
   borderBottom: `none`,
-  backgroundColor: theme.palette.primary.main,
+  backgroundColor: theme.palette.primary.light,
   color: theme.palette.common.white,
 }));
 
@@ -25,7 +25,7 @@ export const StyledBox = styled(Box)(({ theme }) => ({
 }));
 
 export const Footer = styled(Stack)(({ theme }) => ({
-  backgroundColor: theme.palette.primary.main,
+  backgroundColor: theme.palette.secondary.main,
   alignItems: "center",
   padding: theme.spacing(1),
 }));

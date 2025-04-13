@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import * as PATHS from "../../../../routes/paths";
-import { RootState } from "../../../../redux/store";
+import { IRootState } from "../../../../redux/store";
 import { useSelector } from "react-redux";
 
 interface IUseVerificacao {
@@ -9,7 +9,7 @@ interface IUseVerificacao {
 }
 
 export const useVerificacao = (): IUseVerificacao => {
-  const { email } = useSelector((state: RootState) => state.user);
+  const { email } = useSelector((state: IRootState) => state.user);
 
   const navigate = useNavigate();
 
