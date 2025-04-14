@@ -1,24 +1,25 @@
-import { Button, Grid } from "@mui/material";
+import { Grid } from "@mui/material";
 import { Controller } from "react-hook-form";
 import { StyledDivider, StyledLink, StyledTextField } from "../styles";
 import { AuthLayout } from "../../../layouts/AuthLayout";
-import { useRegistrarNome } from "./hooks/useRegistrarNome";
+import { usePersonalInfo } from "./hooks/usePersonalInfo";
+import { LoadingButton } from "@mui/lab";
 
 export const PersonalInfo: React.FC = () => {
   const {
-    registrarNomeForm,
-    isPending,
+    personalInfoForm,
+    isLoading,
     handleKeyDown,
     handleNavigate,
-    onSubmit,
-  } = useRegistrarNome();
+    submitPersonalInfoForm,
+  } = usePersonalInfo();
 
   return (
     <AuthLayout titleRoute="Digite o seu nome" onKeyDown={handleKeyDown}>
       <Grid item xs={12}>
         <Controller
           name="nome"
-          control={registrarNomeForm.control}
+          control={personalInfoForm.control}
           rules={{
             required: true,
           }}
@@ -39,7 +40,7 @@ export const PersonalInfo: React.FC = () => {
                 },
               }}
               required
-              disabled={isPending}
+              disabled={isLoading}
               fullWidth
               error={!!fieldState.error}
               helperText={(field.value ?? "")?.length + "/50"}
@@ -49,9 +50,15 @@ export const PersonalInfo: React.FC = () => {
       </Grid>
 
       <Grid item xs={12}>
-        <Button loading={isPending} variant="contained" onClick={onSubmit}>
-          SALVAR
-        </Button>
+        <LoadingButton
+          loading={isLoading}
+          variant="contained"
+          size="large"
+          onClick={submitPersonalInfoForm}
+          sx={{ width: "100%" }}
+        >
+          Confirmar
+        </LoadingButton>
       </Grid>
       <Grid item xs={12}>
         <StyledDivider />
@@ -63,7 +70,7 @@ export const PersonalInfo: React.FC = () => {
             variant="body2"
             sx={{ cursor: "pointer" }}
           >
-            Fazer login
+            Voltar para a tela de login
           </StyledLink>
         </Grid>
       </Grid>

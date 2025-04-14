@@ -2,10 +2,15 @@ import { useForm, UseFormReturn } from "react-hook-form";
 import { ICadastro } from "../interfaces";
 import { useNavigate } from "react-router-dom";
 import * as PATHS from "../../../../routes/paths";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { createAccountWithEmailAndPassword } from "../../../../api/Auth/createAccountWithEmailAndPassword";
 import { auth } from "../../../../firebaseConfig";
 import { useNotification } from "../../../../hooks/useNotification";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { createAccountSchema } from "../schema/createAccountSchema";
+import { logoutUsuario } from "../../../../api/Auth/logoutUser";
+import { IRootState } from "../../../../redux/store";
+import { useSelector } from "react-redux";
 
 interface IUseCreateAccount {
   createAccountForm: UseFormReturn<ICadastro>;
@@ -18,12 +23,21 @@ interface IUseCreateAccount {
 export const useCreateAccount = (): IUseCreateAccount => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const createAccountForm = useForm<ICadastro>();
+  const { uid } = useSelector((state: IRootState) => state.user);
+
+  const createAccountForm = useForm<ICadastro>({
+    resolver: zodResolver(createAccountSchema),
+  });
 
   const { handleShowSnackBar } = useNotification();
 
   const navigate = useNavigate();
 
+  useEffect(() => {
+    if (uid) {
+      logoutUsuario();
+    }
+  }, [uid]);
   function submitCreateAccountForm(): void {
     createAccountForm.handleSubmit(async (data) => {
       try {

@@ -1,4 +1,4 @@
 import { z } from "zod";
-import { registrarNomeSchema } from "../schema/registrarNomeSchema";
+import { personalInfoSchema } from "../schema/personalInfoSchema";
 
-export type INome = z.infer<typeof registrarNomeSchema>;
+export type INome = z.infer<typeof personalInfoSchema>;

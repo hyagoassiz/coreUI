@@ -1,8 +1,9 @@
-import { Button, Grid } from "@mui/material";
+import { Grid } from "@mui/material";
 import { Controller } from "react-hook-form";
 import { useCreateAccount } from "./hooks/useCreateAccount";
 import { StyledDivider, StyledLink, StyledTextField } from "../styles";
 import { AuthLayout } from "../../../layouts/AuthLayout";
+import { LoadingButton } from "@mui/lab";
 
 export const CreateAccount: React.FC = () => {
   const {
@@ -103,14 +104,15 @@ export const CreateAccount: React.FC = () => {
         />
       </Grid>
       <Grid item xs={12}>
-        <Button
+        <LoadingButton
           loading={isLoading}
           variant="contained"
-          sx={{ width: "100%", height: "40px" }}
+          size="large"
+          sx={{ width: "100%" }}
           onClick={submitCreateAccountForm}
         >
           CRIAR CONTA
-        </Button>
+        </LoadingButton>
       </Grid>
       <Grid item xs={12}>
         <StyledDivider />
