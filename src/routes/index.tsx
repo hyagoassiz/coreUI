@@ -1,16 +1,17 @@
 import { HashRouter, Routes, Route, Outlet, Navigate } from "react-router-dom";
 import * as PATHS from "./paths";
 import { PageLayout } from "../layouts/PageLayout/PageLayout";
-import { Page1 } from "../pages/Page1";
-import { Dashboard } from "../pages/Dashboard";
-import { Route1, Route2 } from "../pages/News";
-import {
-  CreateAccount,
-  Login,
-  PersonalInfo,
-  Verification,
-} from "../pages/Auth";
 import { ProtectedRoute } from "../components/ProtectedRoute";
+import {
+  AboutRoute,
+  CreateAccountRoute,
+  DashboardRoute,
+  LoginRoute,
+  PersonalInfoRoute,
+  ProductsRoute,
+  SettingsRoute,
+  VerificationRoute,
+} from "../pages";
 
 const LayoutWrapper = () => (
   <PageLayout>
@@ -22,13 +23,13 @@ export const AppRoutes = () => {
   return (
     <HashRouter>
       <Routes>
-        <Route path={PATHS.AUTH.LOGIN} element={<Login />} />
-        <Route path={PATHS.AUTH.CREATE} element={<CreateAccount />} />
+        <Route path={PATHS.AUTH.LOGIN} element={<LoginRoute />} />
+        <Route path={PATHS.AUTH.CREATE} element={<CreateAccountRoute />} />
         <Route
           path={PATHS.AUTH.VERIFICATION}
           element={
             <ProtectedRoute>
-              <Verification />
+              <VerificationRoute />
             </ProtectedRoute>
           }
         />
@@ -36,7 +37,7 @@ export const AppRoutes = () => {
           path={PATHS.AUTH.INFO}
           element={
             <ProtectedRoute>
-              <PersonalInfo />
+              <PersonalInfoRoute />
             </ProtectedRoute>
           }
         />
@@ -46,34 +47,38 @@ export const AppRoutes = () => {
             path={PATHS.DASHBOARD.LIST}
             element={
               <ProtectedRoute>
-                <Dashboard />
+                <DashboardRoute />
               </ProtectedRoute>
             }
           />
+
           <Route
-            path={PATHS.PAGE_1.LIST}
+            path={PATHS.PRODUCTS.LIST}
             element={
               <ProtectedRoute>
-                <Page1 />
+                <ProductsRoute />
               </ProtectedRoute>
             }
           />
+
           <Route
-            path={PATHS.NEWS.LIST}
+            path={PATHS.ABOUT.LIST}
             element={
               <ProtectedRoute>
-                <Route1 />
+                <AboutRoute />
               </ProtectedRoute>
             }
           />
+
           <Route
-            path={PATHS.NEWS.LIST_2}
+            path={PATHS.SETTINGS.LIST}
             element={
               <ProtectedRoute>
-                <Route2 />
+                <SettingsRoute />
               </ProtectedRoute>
             }
           />
+
           <Route path="*" element={<Navigate to={PATHS.DASHBOARD.LIST} />} />
         </Route>
       </Routes>

@@ -1,16 +1,16 @@
 import { useDispatch } from "react-redux";
-import { setLoading } from "../redux/loadingSlice";
+import { setLoading as setLoadingRedux } from "../redux/loadingSlice";
 
 interface IUseLoading {
-  handleSetLoading(isLoading: boolean): void;
+  setLoading(isLoading: boolean): void;
 }
 
 export const useLoading = (): IUseLoading => {
   const dispatch = useDispatch();
 
-  function handleSetLoading(isLoading: boolean): void {
-    dispatch(setLoading(isLoading));
+  function setLoading(isLoading: boolean): void {
+    dispatch(setLoadingRedux(isLoading));
   }
 
-  return { handleSetLoading };
+  return { setLoading };
 };

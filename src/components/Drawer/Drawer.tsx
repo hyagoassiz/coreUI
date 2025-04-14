@@ -21,29 +21,35 @@ import { ReactNode } from "react";
 import { rotas } from "./constants/constants";
 import { useLocation, useNavigate } from "react-router-dom";
 
-const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })<{
-  open?: boolean;
-}>(({ theme }) => ({
-  flexGrow: 1,
-  padding: theme.spacing(3),
-  transition: theme.transitions.create("margin", {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.leavingScreen,
-  }),
-  marginLeft: `-${240}px`,
-  variants: [
-    {
-      props: ({ open }) => open,
-      style: {
+const Main = ({
+  open,
+  isMobile,
+  children,
+}: {
+  open: boolean;
+  isMobile: boolean;
+  children: React.ReactNode;
+}) => {
+  const theme = useTheme();
+
+  return (
+    <Box
+      component="main"
+      sx={{
+        flexGrow: 1,
+        padding: theme.spacing(3),
         transition: theme.transitions.create("margin", {
-          easing: theme.transitions.easing.easeOut,
-          duration: theme.transitions.duration.enteringScreen,
+          easing: theme.transitions.easing.sharp,
+          duration: theme.transitions.duration.leavingScreen,
         }),
-        marginLeft: 0,
-      },
-    },
-  ],
-}));
+        marginLeft: !isMobile && open ? 0 : !isMobile ? `-${240}px` : 0,
+      }}
+    >
+      <DrawerHeader />
+      {children}
+    </Box>
+  );
+};
 
 const DrawerHeader = styled("div")(({ theme }) => ({
   display: "flex",
@@ -164,8 +170,7 @@ export const Drawer: React.FC<IDrawer> = ({ children }) => {
           </Box>
         ))}
       </MuiDrawer>
-      <Main open={drawer.isOpen}>
-        <DrawerHeader />
+      <Main open={drawer.isOpen} isMobile={isMobile}>
         {children}
       </Main>
     </Box>

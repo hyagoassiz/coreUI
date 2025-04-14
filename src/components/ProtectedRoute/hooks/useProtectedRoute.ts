@@ -22,7 +22,7 @@ export const useProtectedRoute = (): IUseLogin => {
 
   const location = useLocation();
 
-  const { handleSetLoading } = useLoading();
+  const { setLoading } = useLoading();
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -68,10 +68,10 @@ export const useProtectedRoute = (): IUseLogin => {
       return;
     }
 
-    // if (!user.displayName) {
-    //   navigate(PATHS.AUTH.INFO);
-    //   return;
-    // }
+    if (!user.displayName) {
+      navigate(PATHS.AUTH.INFO);
+      return;
+    }
 
     const { pathname } = location;
 
@@ -82,12 +82,12 @@ export const useProtectedRoute = (): IUseLogin => {
 
   async function sendEmailVerification(): Promise<void> {
     try {
-      handleSetLoading(true);
+      setLoading(true);
       await sendEmailVerificationToUser(auth);
     } catch (error) {
       console.error(error);
     } finally {
-      handleSetLoading(false);
+      setLoading(false);
     }
   }
 
