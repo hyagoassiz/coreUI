@@ -10,9 +10,10 @@ export const BoxMain = styled(Box)(() => ({
 }));
 
 export const BoxContainer = styled(Box)(({ theme }) => ({
+  display: "flex",
+  flexDirection: "column",
   alignItems: "center",
   height: "auto",
-  minHeight: "400px",
   width: "350px",
   boxShadow: "0px 3px 5px rgba(0, 0, 0, 0.3)",
   padding: theme.spacing(4),
@@ -20,4 +21,5 @@ export const BoxContainer = styled(Box)(({ theme }) => ({
 
 export const TitleStyled = styled(Typography)<TypographyProps>(() => ({
   fontWeight: 600,
+  alignSelf: "flex-start",
 }));

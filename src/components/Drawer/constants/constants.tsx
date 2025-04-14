@@ -1,9 +1,9 @@
 import * as PATHS from "../../../routes/paths";
 import { IRotas } from "../interfaces";
 import SpaceDashboardIcon from "@mui/icons-material/SpaceDashboard";
-import LayersIcon from "@mui/icons-material/Layers";
-import AutoStoriesIcon from "@mui/icons-material/AutoStories";
-import RequestPageIcon from "@mui/icons-material/RequestPage";
+import DescriptionIcon from "@mui/icons-material/Description";
+import InventoryIcon from "@mui/icons-material/Inventory";
+import { Settings } from "@mui/icons-material";
 
 export const rotas: IRotas[] = [
   {
@@ -17,16 +17,25 @@ export const rotas: IRotas[] = [
     ],
   },
   {
-    categoria: "News",
+    categoria: "",
     rotas: [
-      { name: "Route 1", route: PATHS.NEWS.LIST, icon: <AutoStoriesIcon /> },
-      { name: "Route 2", route: PATHS.NEWS.LIST_2, icon: <RequestPageIcon /> },
+      {
+        name: "Produtos",
+        route: PATHS.PRODUCTS.LIST,
+        icon: <InventoryIcon />,
+      },
     ],
   },
   {
-    categoria: "Categoria",
+    categoria: "",
     rotas: [
-      { name: "Página 1", route: PATHS.PAGE_1.LIST, icon: <LayersIcon /> },
+      { name: "Sobre", route: PATHS.ABOUT.LIST, icon: <DescriptionIcon /> },
+    ],
+  },
+  {
+    categoria: "",
+    rotas: [
+      { name: "Configurações", route: PATHS.SETTINGS.LIST, icon: <Settings /> },
     ],
   },
 ];

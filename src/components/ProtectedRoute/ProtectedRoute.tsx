@@ -1,3 +1,4 @@
+import { FullScreenLoader } from "../FullScreenLoader";
 import { useProtectedRoute } from "./hooks/useProtectedRoute";
 
 interface IProtectedRoute {
@@ -7,5 +8,5 @@ interface IProtectedRoute {
 export const ProtectedRoute: React.FC<IProtectedRoute> = ({ children }) => {
   const { signed } = useProtectedRoute();
 
-  return signed ? <>{children}</> : null;
+  return signed ? <>{children}</> : <FullScreenLoader />;
 };

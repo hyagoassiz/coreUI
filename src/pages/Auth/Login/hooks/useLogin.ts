@@ -3,8 +3,11 @@ import { useNavigate } from "react-router-dom";
 import * as PATHS from "../../../../routes/paths";
 import { loginWithEmailAndPassword } from "../../../../api/Auth/loginWithEmailAndPassword";
 import { auth } from "../../../../firebaseConfig";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNotification } from "../../../../hooks/useNotification";
+import { logoutUsuario } from "../../../../api/Auth/logoutUser";
+import { useSelector } from "react-redux";
+import { IRootState } from "../../../../redux/store";
 
 interface IUseLogin {
   isLoading: boolean;
@@ -17,11 +20,19 @@ interface IUseLogin {
 export const useLogin = (): IUseLogin => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
+  const { uid } = useSelector((state: IRootState) => state.user);
+
   const loginForm = useForm<ILoginApi>();
 
   const navigate = useNavigate();
 
   const { handleShowSnackBar } = useNotification();
+
+  useEffect(() => {
+    if (uid) {
+      logoutUsuario();
+    }
+  }, [uid]);
 
   function handleKeyDown(event: React.KeyboardEvent<HTMLDivElement>): void {
     if (isLoading) return;

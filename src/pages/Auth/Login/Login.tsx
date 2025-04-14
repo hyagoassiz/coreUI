@@ -1,4 +1,4 @@
-import { Button, Checkbox, Grid } from "@mui/material";
+import { Checkbox, Grid } from "@mui/material";
 import { Controller } from "react-hook-form";
 import { useLogin } from "./hooks/useLogin";
 import {
@@ -8,6 +8,7 @@ import {
   StyledTextField,
 } from "../styles";
 import { AuthLayout } from "../../../layouts/AuthLayout";
+import { LoadingButton } from "@mui/lab";
 
 export const Login: React.FC = () => {
   const {
@@ -81,14 +82,15 @@ export const Login: React.FC = () => {
       </Grid>
 
       <Grid item xs={12}>
-        <Button
+        <LoadingButton
           loading={isLoading}
+          size="large"
           variant="contained"
           onClick={submitLoginForm}
-          sx={{ width: "100%", height: "40px" }}
+          sx={{ width: "100%" }}
         >
           Entrar
-        </Button>
+        </LoadingButton>
       </Grid>
       <Grid item xs={12}>
         <StyledDivider />

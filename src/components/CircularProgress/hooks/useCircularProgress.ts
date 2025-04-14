@@ -1,12 +1,12 @@
 import { useSelector } from "react-redux";
-import { RootState } from "../../../redux/store";
+import { IRootState } from "../../../redux/store";
 
 interface IUseCircularProgress {
   loading: boolean;
 }
 
 export const useCircularProgress = (): IUseCircularProgress => {
-  const { loading } = useSelector((state: RootState) => state.loading);
+  const { loading } = useSelector((state: IRootState) => state.loading);
 
   return { loading };
 };

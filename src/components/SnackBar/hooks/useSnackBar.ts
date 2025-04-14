@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { RootState } from "../../../redux/store";
+import { IRootState } from "../../../redux/store";
 import { ISnackBar } from "../../../interfaces";
 import { closeSnackBar } from "../../../redux/snackBarSlice";
 
@@ -11,7 +11,7 @@ interface IUseSnackbar {
 
 const useSnackBar = (): IUseSnackbar => {
   const dispatch = useDispatch();
-  const snackBar = useSelector((state: RootState) => state.snackBar);
+  const snackBar = useSelector((state: IRootState) => state.snackBar);
 
   useEffect(() => {
     if (snackBar.open) {
