@@ -2,16 +2,14 @@ import { HashRouter, Routes, Route, Outlet, Navigate } from "react-router-dom";
 import * as PATHS from "./paths";
 import { PageLayout } from "../layouts/PageLayout/PageLayout";
 import { ProtectedRoute } from "../components/ProtectedRoute";
-import {
-  AboutRoute,
-  CreateAccountRoute,
-  DashboardRoute,
-  LoginRoute,
-  PersonalInfoRoute,
-  ProductsRoute,
-  SettingsRoute,
-  VerificationRoute,
-} from "../pages";
+import { LoginRoute } from "../pages/Auth/Login";
+import { CreateAccountRoute } from "../pages/Auth/CreateAccount";
+import { VerificationRoute } from "../pages/Auth/Verification";
+import { PersonalInfoRoute } from "../pages/Auth/PersonalInfo";
+import { DashboardRoute } from "../pages/Dashboard/List";
+import { ProductsRoute } from "../pages/Products/List";
+import { AboutRoute } from "../pages/About/List";
+import { SettingsRoute } from "../pages/Settings/List";
 
 const LayoutWrapper = () => (
   <PageLayout>
