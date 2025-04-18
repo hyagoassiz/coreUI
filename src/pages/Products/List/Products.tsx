@@ -7,6 +7,7 @@ import useSearchBar from "../../../hooks/useSearchBar";
 import { PageTitle } from "../../../components/PageTitle";
 import { ToolbarContainer } from "../../../components/ToolbarContainer";
 import { DataTable } from "../../../components/DataTable/DataTable";
+import { ModalCadastrarProduto } from "./components/ModalCadastrarProduto/ModalCadastrarProduto";
 
 export const Products: React.FC = () => {
   const { searchBar, textoBusca } = useSearchBar({
@@ -55,6 +56,8 @@ export const Products: React.FC = () => {
         data={mountData({ products })}
         textForEmptyData="Nenhum produto encontrado."
       />
+
+      {/* <ModalCadastrarProduto /> */}
     </>
   );
 };

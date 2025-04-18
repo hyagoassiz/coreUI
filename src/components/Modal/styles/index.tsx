@@ -14,5 +14,5 @@ export const StyledBox = styled(Box)(({ theme }) => ({
   p: 4,
   borderRadius: theme.spacing(2),
   padding: theme.spacing(3),
-  backgroundColor: theme.palette.primary.main,
+  backgroundColor: theme.palette.primary.contrastText,
 }));

@@ -4,6 +4,10 @@ import Tab from "@mui/material/Tab";
 import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
 import { useSettingsContext } from "../../hooks/useSettingsContext";
+import { ProfileTab } from "./components/ProfileTab";
+import { SecurityTab } from "./components/SecurityTab";
+import { PreferencesTab } from "./components/PreferencesTab";
+import { PlansTab } from "./components/PlansTab";
 
 export const Tabs: React.FC = () => {
   const { setValue, value } = useSettingsContext();
@@ -19,12 +23,22 @@ export const Tabs: React.FC = () => {
           <TabList onChange={handleChange} aria-label="lab API tabs example">
             <Tab label="Perfil" value="1" />
             <Tab label="Preferências" value="2" />
-            <Tab label="Mudar senha" value="3" />
+            <Tab label="Meu plano" value="3" />
+            <Tab label="Segurança" value="4" />
           </TabList>
         </Box>
-        <TabPanel value="1">Perfil</TabPanel>
-        <TabPanel value="2">Preferências</TabPanel>
-        <TabPanel value="3">Mudar senha</TabPanel>
+        <TabPanel value="1">
+          <ProfileTab />
+        </TabPanel>
+        <TabPanel value="2">
+          <PreferencesTab />
+        </TabPanel>
+        <TabPanel value="3">
+          <PlansTab />
+        </TabPanel>
+        <TabPanel value="4">
+          <SecurityTab />
+        </TabPanel>
       </TabContext>
     </Box>
   );
