@@ -104,7 +104,7 @@ export const Drawer: React.FC<IDrawer> = ({ children }) => {
           "& .MuiDrawer-paper": {
             width: isMobile ? "100vw" : drawer.drawerWidth,
             boxSizing: "border-box",
-            backgroundColor: theme.palette.text.primary,
+            backgroundColor: theme.palette.primary.contrastText,
           },
         }}
         variant={isMobile ? "temporary" : "persistent"}
@@ -139,12 +139,12 @@ export const Drawer: React.FC<IDrawer> = ({ children }) => {
                   sx={{
                     backgroundColor:
                       opcaoSelecionada === rota.route
-                        ? theme.palette.primary.dark
+                        ? theme.palette.primary.main
                         : "",
                     color:
                       opcaoSelecionada === rota.route
-                        ? theme.palette.secondary.light
-                        : theme.palette.secondary.light,
+                        ? theme.palette.primary.contrastText
+                        : theme.palette.text.primary,
                     "&:hover": {
                       opacity: "80%",
                     },
@@ -157,7 +157,7 @@ export const Drawer: React.FC<IDrawer> = ({ children }) => {
                         color:
                           opcaoSelecionada === rota.route
                             ? theme.palette.primary.contrastText
-                            : theme.palette.secondary.main,
+                            : theme.palette.text.primary,
                       }}
                     >
                       {rota.icon}

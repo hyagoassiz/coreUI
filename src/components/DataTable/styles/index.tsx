@@ -1,4 +1,4 @@
-import { Box, Stack, styled, TableCell, TableHead } from "@mui/material";
+import { Box, styled, TableCell, TableHead } from "@mui/material";
 import InfoIcon from "@mui/icons-material/Info";
 
 export const StyledTableHead = styled(TableHead)(({ theme }) => ({
@@ -7,9 +7,7 @@ export const StyledTableHead = styled(TableHead)(({ theme }) => ({
 
 export const StyledTableCellHead = styled(TableCell)(({ theme }) => ({
   fontWeight: 600,
-  borderBottom: `none`,
-  backgroundColor: theme.palette.primary.light,
-  color: theme.palette.common.white,
+  backgroundColor: theme.palette.background.paper,
 }));
 
 export const StyledTableCellBody = styled(TableCell)(({ theme }) => ({
@@ -22,12 +20,6 @@ export const StyledBox = styled(Box)(({ theme }) => ({
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-}));
-
-export const Footer = styled(Stack)(({ theme }) => ({
-  backgroundColor: theme.palette.secondary.main,
-  alignItems: "center",
-  padding: theme.spacing(1),
 }));
 
 export const Icon = styled(InfoIcon)(({ theme }) => ({

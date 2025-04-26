@@ -26,7 +26,7 @@ export const useLogin = (): IUseLogin => {
 
   const navigate = useNavigate();
 
-  const { handleShowSnackBar } = useNotification();
+  const { showSnackBar } = useNotification();
 
   useEffect(() => {
     if (uid) {
@@ -61,7 +61,7 @@ export const useLogin = (): IUseLogin => {
         navigate(PATHS.DASHBOARD.LIST);
       } catch (error) {
         console.error(error);
-        handleShowSnackBar(String(error), "error");
+        showSnackBar(String(error), "error");
       } finally {
         setIsLoading(false);
       }

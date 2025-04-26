@@ -5,7 +5,7 @@ import useMoreOptions from "./hooks/useMoreOptions";
 interface IMoreOptions {
   options: {
     label: string;
-    action: () => void;
+    action(): void;
   }[];
   disabled?: boolean;
 }

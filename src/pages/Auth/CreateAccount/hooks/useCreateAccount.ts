@@ -29,7 +29,7 @@ export const useCreateAccount = (): IUseCreateAccount => {
     resolver: zodResolver(createAccountSchema),
   });
 
-  const { handleShowSnackBar } = useNotification();
+  const { showSnackBar } = useNotification();
 
   const navigate = useNavigate();
 
@@ -53,7 +53,7 @@ export const useCreateAccount = (): IUseCreateAccount => {
         navigate(PATHS.AUTH.INFO);
       } catch (error) {
         console.error(error);
-        handleShowSnackBar(String(error), "error");
+        showSnackBar(String(error), "error");
       } finally {
         setIsLoading(false);
       }

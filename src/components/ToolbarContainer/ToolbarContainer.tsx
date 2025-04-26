@@ -38,7 +38,7 @@ export const ToolbarContainer: React.FC<IToolbarContainer> = ({
                   paddingRight: theme.spacing(1),
                   height: theme.spacing(4.5),
                   width: "90%",
-                  backgroundColor: theme.palette.primary.light,
+                  backgroundColor: theme.palette.primary.contrastText,
                 },
                 startAdornment: (
                   <InputAdornment position="start">
