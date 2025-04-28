@@ -1,14 +1,9 @@
 import { Button, Typography } from "@mui/material";
 import { Modal } from "../../../../../components/Modal";
 import { useDeactivateModal } from "./hooks/useDeactivateModal";
+import { IDeactivateModalProps } from "./interfaces";
 
-interface IDeactivateModal {
-  open: boolean;
-  product: IProductResponseApi;
-  onClose(): void;
-}
-
-export const DeactivateModal: React.FC<IDeactivateModal> = ({
+export const DeactivateModal: React.FC<IDeactivateModalProps> = ({
   open,
   product,
   onClose,

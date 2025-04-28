@@ -3,20 +3,15 @@ import { useLoading } from "../../../../../../hooks/useLoading";
 import { useQueryClient } from "@tanstack/react-query";
 import { updateProductStatus } from "../../../../../../api/Products/updateProductStatus";
 import { KEY_GET_PRODUCTS } from "../../../../../../api/Products/hooks/useQueryGetProducts";
-
-interface IUseDeactivateModalProps {
-  product: IProductResponseApi;
-  onClose(): void;
-}
-
-interface IUseDeactivateModal {
-  submit(): Promise<void>;
-}
+import {
+  IUseDeactivateModalProps,
+  IUseDeactivateModalReturn,
+} from "../interfaces";
 
 export const useDeactivateModal = ({
   product,
   onClose,
-}: IUseDeactivateModalProps): IUseDeactivateModal => {
+}: IUseDeactivateModalProps): IUseDeactivateModalReturn => {
   const { showSnackBar } = useNotification();
 
   const { setLoading } = useLoading();

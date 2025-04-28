@@ -3,6 +3,7 @@ import {
   Checkbox,
   Pagination,
   Paper,
+  Stack,
   TableBody,
   TableContainer,
   TableRow,
@@ -18,13 +19,14 @@ import {
   StyledTableHead,
 } from "./styles";
 import useDataTable from "./hooks/useDataTable";
-import { useState } from "react";
+import { ReactNode, useState } from "react";
 import { IDataTableColumns } from "../../interfaces";
 
 type SelectionMode = "single" | "multiple";
 
 interface IDataTable {
   columns: IDataTableColumns[];
+  chips?: ReactNode | null;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   data: any[];
   textForEmptyData: string;
@@ -38,6 +40,7 @@ interface IDataTable {
 
 export const DataTable: React.FC<IDataTable> = ({
   columns,
+  chips,
   data,
   textForEmptyData,
   selectionMode,
@@ -113,6 +116,12 @@ export const DataTable: React.FC<IDataTable> = ({
           borderColor: "divider",
         }}
       >
+        {chips && (
+          <Stack direction="row" spacing={1} p="8px 8px 0px 8px">
+            {chips}
+          </Stack>
+        )}
+
         <TableContainer sx={{ maxHeight: 400 }}>
           <Table size="small" stickyHeader aria-label="sticky table">
             <StyledTableHead>

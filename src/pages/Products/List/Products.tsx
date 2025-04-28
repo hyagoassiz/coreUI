@@ -1,4 +1,4 @@
-import { Button } from "@mui/material";
+import { Button, Chip } from "@mui/material";
 import { productColumns } from "./constants/constants";
 import { mountData } from "./utils/mountData";
 import { Add } from "@mui/icons-material";
@@ -31,7 +31,10 @@ export const Products: React.FC = () => {
 
   return (
     <>
-      <PageTitle title="Produtos" subTitle="Gerencie os seus produtos" />
+      <PageTitle
+        title="Produtos"
+        subTitle="Gerencie o cadastro dos seus produtos"
+      />
 
       <ToolbarContainer
         buttons={
@@ -51,6 +54,14 @@ export const Products: React.FC = () => {
       />
 
       <DataTable
+        chips={
+          filterCount > 0 && (
+            <Chip
+              label="Inativos"
+              onDelete={() => setProductListPayload({ ativo: true })}
+            />
+          )
+        }
         columns={productColumns}
         data={mountData({
           products,

@@ -1,5 +1,9 @@
-import { useForm, UseFormReturn } from "react-hook-form";
-import { IProductForm } from "../interfaces";
+import { useForm } from "react-hook-form";
+import {
+  IProductForm,
+  IUseProductModalProps,
+  IUseProductModalReturn,
+} from "../interfaces";
 import { useNotification } from "../../../../../../hooks/useNotification";
 import { useLoading } from "../../../../../../hooks/useLoading";
 import { postProduct } from "../../../../../../api/Products/postProduct";
@@ -8,20 +12,10 @@ import { useQueryClient } from "@tanstack/react-query";
 import { KEY_GET_PRODUCTS } from "../../../../../../api/Products/hooks/useQueryGetProducts";
 import { useEffect } from "react";
 
-interface IUseProductModalProps {
-  product: IProductResponseApi | null;
-  onClose(): void;
-}
-
-interface IUseProductModal {
-  productForm: UseFormReturn<IProductForm>;
-  submitProductForm(): void;
-}
-
 export const useProductModal = ({
   product,
   onClose,
-}: IUseProductModalProps): IUseProductModal => {
+}: IUseProductModalProps): IUseProductModalReturn => {
   const productForm = useForm<IProductForm>({ defaultValues: { ativo: true } });
 
   const { showSnackBar } = useNotification();

@@ -1,6 +1,5 @@
-import { Dispatch, SetStateAction, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import useSearchBar from "../../../../hooks/useSearchBar";
-import { ISeachBar } from "../../../../interfaces/ISearchBar";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   KEY_GET_PRODUCTS,
@@ -9,28 +8,9 @@ import {
 import { useLoading } from "../../../../hooks/useLoading";
 import { useNotification } from "../../../../hooks/useNotification";
 import { updateProductStatus } from "../../../../api/Products/updateProductStatus";
+import { IUseListReturn } from "../interfaces";
 
-interface IUseList {
-  filterCount: number;
-  isFilterOpen: boolean;
-  modalDeactivateProductState: {
-    open: boolean;
-    product: IProductResponseApi | null;
-  };
-  modalProductState: { open: boolean; product: IProductResponseApi | null };
-  productListPayload: IProductListPayloadApi;
-  products: IProductResponseApi[] | undefined;
-  searchBar: ISeachBar;
-  handleActivateProduct(product: IProductResponseApi): void;
-  handleDeactivateProduct(product: IProductResponseApi): void;
-  handleEditProduct(product: IProductResponseApi): void;
-  setProductListPayload: Dispatch<SetStateAction<IProductListPayloadApi>>;
-  toggleCreateProductModal(): void;
-  toggleDeactivateProductModal(): void;
-  toggleFilter(): void;
-}
-
-export const useList = (): IUseList => {
+export const useList = (): IUseListReturn => {
   const queryClient = useQueryClient();
 
   const { showSnackBar } = useNotification();
@@ -51,8 +31,9 @@ export const useList = (): IUseList => {
     product: null,
   });
 
-  const { searchBar } = useSearchBar({
+  const { searchBar, textoBusca } = useSearchBar({
     placeHolder: "Pesquisar produto",
+    debounceTime: 300,
   });
 
   const [isFilterOpen, setIsFilterOpen] = useState<boolean>(false);
@@ -67,8 +48,14 @@ export const useList = (): IUseList => {
   const { setLoading } = useLoading();
 
   const products = useMemo(() => {
-    return queryGetProducts.data;
-  }, [queryGetProducts.data]);
+    const list = queryGetProducts.data ?? [];
+
+    if (!textoBusca) return list;
+
+    return list.filter((produto) =>
+      produto.nome.toLowerCase().includes(textoBusca.toLowerCase())
+    );
+  }, [queryGetProducts.data, textoBusca]);
 
   const filterCount: number = productListPayload.ativo === true ? 0 : 1;
 

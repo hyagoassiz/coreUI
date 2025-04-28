@@ -2,16 +2,9 @@ import { Controller } from "react-hook-form";
 import { FilterDrawer } from "../../../../../components/FilterDrawer";
 import { Checkbox, FormControlLabel, FormGroup } from "@mui/material";
 import { useFilter } from "./hooks/useFilter";
-import { Dispatch, SetStateAction } from "react";
+import { IFilterProps } from "./interfaces";
 
-export interface IFilter {
-  open: boolean;
-  productListPayload: IProductListPayloadApi;
-  onClose(): void;
-  setProductListPayload: Dispatch<SetStateAction<IProductListPayloadApi>>;
-}
-
-export const Filter: React.FC<IFilter> = ({
+export const Filter: React.FC<IFilterProps> = ({
   open,
   productListPayload,
   onClose,

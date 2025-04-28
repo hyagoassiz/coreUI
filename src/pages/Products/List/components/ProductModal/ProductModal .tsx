@@ -9,14 +9,9 @@ import {
 import { Modal } from "../../../../../components/Modal";
 import { NumericFormat } from "react-number-format";
 import { useProductModal } from "./hooks/useProductModal";
+import { IProductModalProps } from "./interfaces";
 
-interface IProductModal {
-  open: boolean;
-  product: IProductResponseApi | null;
-  onClose(): void;
-}
-
-export const ProductModal: React.FC<IProductModal> = ({
+export const ProductModal: React.FC<IProductModalProps> = ({
   open,
   product,
   onClose,
