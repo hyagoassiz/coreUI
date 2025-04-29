@@ -1,6 +1,9 @@
 import {
+  Box,
   Checkbox,
   Pagination,
+  Paper,
+  Stack,
   TableBody,
   TableContainer,
   TableRow,
@@ -9,7 +12,6 @@ import {
 } from "@mui/material";
 import Table from "@mui/material/Table";
 import {
-  Footer,
   Icon,
   StyledBox,
   StyledTableCellBody,
@@ -17,13 +19,14 @@ import {
   StyledTableHead,
 } from "./styles";
 import useDataTable from "./hooks/useDataTable";
-import { useState } from "react";
+import { ReactNode, useState } from "react";
 import { IDataTableColumns } from "../../interfaces";
 
 type SelectionMode = "single" | "multiple";
 
 interface IDataTable {
   columns: IDataTableColumns[];
+  chips?: ReactNode | null;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   data: any[];
   textForEmptyData: string;
@@ -37,6 +40,7 @@ interface IDataTable {
 
 export const DataTable: React.FC<IDataTable> = ({
   columns,
+  chips,
   data,
   textForEmptyData,
   selectionMode,
@@ -103,88 +107,120 @@ export const DataTable: React.FC<IDataTable> = ({
 
   return (
     <>
-      <TableContainer sx={{ maxHeight: 400, borderRadius: "8px 8px 0px 0px" }}>
-        <Table size="small" stickyHeader aria-label="sticky table">
-          <StyledTableHead>
-            <TableRow>
-              {isSelectable && (
-                <StyledTableCellHead padding="checkbox">
-                  <Checkbox
-                    checked={isAllSelected}
-                    onChange={toggleSelectAll}
-                    inputProps={{ "aria-label": "select all rows" }}
-                    disabled={isSingleSelect}
-                  />
-                </StyledTableCellHead>
-              )}
-              {columns.map((column) => (
-                <StyledTableCellHead size="small" key={column.key}>
-                  {column.label}
-                </StyledTableCellHead>
-              ))}
-            </TableRow>
-          </StyledTableHead>
+      <Paper
+        elevation={3}
+        sx={{
+          borderRadius: 2,
+          overflow: "hidden",
+          border: "1px solid",
+          borderColor: "divider",
+        }}
+      >
+        {chips && (
+          <Stack direction="row" spacing={1} p="8px 8px 0px 8px">
+            {chips}
+          </Stack>
+        )}
 
-          {data.length ? (
-            <TableBody>
-              {paginatedData.map((row, index) => (
-                <TableRow
-                  key={row[rowKey] ?? index}
-                  sx={{
-                    backgroundColor: theme.palette.primary.contrastText,
-                    "&:hover": {
-                      backgroundColor: theme.palette.primary.light,
-                    },
-                  }}
-                >
-                  {isSelectable && (
-                    <StyledTableCellBody padding="checkbox">
-                      <Checkbox
-                        checked={isRowSelected(row)}
-                        onChange={() => toggleRowSelection(row)}
-                      />
-                    </StyledTableCellBody>
-                  )}
-                  {columns.map((column) => (
-                    <StyledTableCellBody
-                      size="small"
-                      key={column.key}
-                      sx={{ ...column?.style }}
-                    >
-                      {row[column.key]}
-                    </StyledTableCellBody>
-                  ))}
-                </TableRow>
-              ))}
-            </TableBody>
-          ) : (
-            <TableBody>
+        <TableContainer sx={{ maxHeight: 400 }}>
+          <Table size="small" stickyHeader aria-label="sticky table">
+            <StyledTableHead>
               <TableRow>
-                <StyledTableCellBody
-                  colSpan={columns.length + (isSelectable ? 1 : 0)}
-                >
-                  <StyledBox>
-                    <Icon color="warning" />
-                    <Typography variant="body2">{textForEmptyData}</Typography>
-                  </StyledBox>
-                </StyledTableCellBody>
+                {isSelectable && (
+                  <StyledTableCellHead padding="checkbox">
+                    <Checkbox
+                      checked={isAllSelected}
+                      onChange={toggleSelectAll}
+                      inputProps={{ "aria-label": "select all rows" }}
+                      disabled={isSingleSelect}
+                    />
+                  </StyledTableCellHead>
+                )}
+                {columns.map((column) => (
+                  <StyledTableCellHead size="small" key={column.key}>
+                    {column.label}
+                  </StyledTableCellHead>
+                ))}
               </TableRow>
-            </TableBody>
-          )}
-        </Table>
-      </TableContainer>
+            </StyledTableHead>
 
-      {paginatedData.length > 0 && (
-        <Footer spacing={2} sx={{ borderRadius: "0px 0px 8px 8px" }}>
-          <Pagination
-            color="standard"
-            count={totalPages}
-            page={page}
-            onChange={(_, value) => setPage(value)}
-            shape="rounded"
-          />
-        </Footer>
-      )}
+            {data.length ? (
+              <TableBody>
+                {paginatedData.map((row, index) => (
+                  <TableRow
+                    key={row[rowKey] ?? index}
+                    sx={{
+                      backgroundColor: theme.palette.primary.contrastText,
+                      "&:hover": {
+                        backgroundColor: theme.palette.action.hover,
+                      },
+                    }}
+                  >
+                    {isSelectable && (
+                      <StyledTableCellBody padding="checkbox">
+                        <Checkbox
+                          checked={isRowSelected(row)}
+                          onChange={() => toggleRowSelection(row)}
+                        />
+                      </StyledTableCellBody>
+                    )}
+                    {columns.map((column) => (
+                      <StyledTableCellBody
+                        size="small"
+                        key={column.key}
+                        sx={{ ...column?.style }}
+                      >
+                        {row[column.key]}
+                      </StyledTableCellBody>
+                    ))}
+                  </TableRow>
+                ))}
+              </TableBody>
+            ) : (
+              <TableBody>
+                <TableRow>
+                  <StyledTableCellBody
+                    colSpan={columns.length + (isSelectable ? 1 : 0)}
+                  >
+                    <StyledBox>
+                      <Icon color="warning" />
+                      <Typography variant="body2">
+                        {textForEmptyData}
+                      </Typography>
+                    </StyledBox>
+                  </StyledTableCellBody>
+                </TableRow>
+              </TableBody>
+            )}
+          </Table>
+        </TableContainer>
+
+        {paginatedData.length > 0 && (
+          <Box
+            display="flex"
+            justifyContent="space-between"
+            alignItems="center"
+            px={2}
+            py={1}
+            sx={{
+              borderTop: "1px solid",
+              borderColor: "divider",
+            }}
+          >
+            <Typography variant="body2" color="text.secondary">
+              Total de resultados: {data.length}
+            </Typography>
+
+            <Pagination
+              color="primary"
+              count={totalPages}
+              page={page}
+              onChange={(_, value) => setPage(value)}
+              shape="rounded"
+            />
+          </Box>
+        )}
+      </Paper>
     </>
   );
 };

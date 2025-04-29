@@ -2,7 +2,7 @@ import { Box, styled, Typography } from "@mui/material";
 
 export const Title = styled(Typography)(({ theme }) => ({
   fontWeight: 600,
-  color: theme.palette.primary.contrastText,
+  color: theme.palette.text.primary,
 }));
 
 export const StyledBox = styled(Box)(({ theme }) => ({
