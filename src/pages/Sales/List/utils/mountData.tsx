@@ -32,16 +32,6 @@ export function mountData({
           />
         </Typography>
       ),
-      quantidade: (
-        <Typography variant="body2">
-          <NumericFormat
-            value={product.quantidade}
-            decimalScale={0}
-            fixedDecimalScale={true}
-            displayType="text"
-          />
-        </Typography>
-      ),
       options: (
         <>
           {product.ativo ? (

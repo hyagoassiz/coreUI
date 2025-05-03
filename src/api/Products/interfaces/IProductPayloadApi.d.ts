@@ -4,6 +4,7 @@ interface IProductPayloadApi {
   codigo: string;
   valor: string;
   ativo: boolean;
+  quantidade: number;
   createdAt?: string;
   updatedAt?: string;
 }

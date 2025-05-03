@@ -50,6 +50,7 @@ export const useProductModal = ({
             codigo: data.codigo,
             valor: data.valor,
             ativo: data.ativo,
+            quantidade: data.quantidade,
             createdAt: data.createdAt ?? now,
             updatedAt: now,
           };

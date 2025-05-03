@@ -13,6 +13,10 @@ export const DASHBOARD = {
   LIST: `${PROJETO.LIST}/dashboard`,
 };
 
+export const SALES = {
+  LIST: `${PROJETO.LIST}/vendas`,
+};
+
 export const PRODUCTS = {
   LIST: `${PROJETO.LIST}/produtos`,
 };

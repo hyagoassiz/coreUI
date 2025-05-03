@@ -10,6 +10,7 @@ import { DashboardRoute } from "../pages/Dashboard/List";
 import { ProductsRoute } from "../pages/Products/List";
 import { AboutRoute } from "../pages/About/List";
 import { SettingsRoute } from "../pages/Settings/List";
+import { SalesRoute } from "../pages/Sales";
 
 const LayoutWrapper = () => (
   <PageLayout>
@@ -46,6 +47,15 @@ export const AppRoutes = () => {
             element={
               <ProtectedRoute>
                 <DashboardRoute />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path={PATHS.SALES.LIST}
+            element={
+              <ProtectedRoute>
+                <SalesRoute />
               </ProtectedRoute>
             }
           />

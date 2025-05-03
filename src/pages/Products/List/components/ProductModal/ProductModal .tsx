@@ -71,7 +71,7 @@ export const ProductModal: React.FC<IProductModalProps> = ({
         />
 
         <Controller
-          name="valor"
+          name="quantidade"
           control={productForm.control}
           rules={{
             required: true,
@@ -84,27 +84,18 @@ export const ProductModal: React.FC<IProductModalProps> = ({
                 field.onChange(floatValue ?? "");
               }}
               customInput={TextField}
-              label="Preço"
+              label="Quantidade em estoque"
               fullWidth
               allowNegative={false}
               thousandSeparator="."
               decimalSeparator=","
-              decimalScale={2}
-              fixedDecimalScale
-              prefix="R$ "
+              decimalScale={0}
               variant="standard"
               valueIsNumericString
-              type="tel"
               inputMode="numeric"
-              inputRef={(input) => {
-                if (input) {
-                  input.onfocus = () => {
-                    setTimeout(() => input.select(), 0);
-                  };
-                }
-              }}
               required
-              error={!!formState.errors.valor}
+              onFocus={(e) => e.target.select()}
+              error={!!formState.errors.quantidade}
             />
           )}
         />
