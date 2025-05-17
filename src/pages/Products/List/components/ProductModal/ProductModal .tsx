@@ -1,11 +1,5 @@
 import { Controller } from "react-hook-form";
-import {
-  Box,
-  TextField,
-  FormControlLabel,
-  Switch,
-  Button,
-} from "@mui/material";
+import { Box, TextField, Button } from "@mui/material";
 import { Modal } from "../../../../../components/Modal";
 import { NumericFormat } from "react-number-format";
 import { useProductModal } from "./hooks/useProductModal";
@@ -71,6 +65,45 @@ export const ProductModal: React.FC<IProductModalProps> = ({
         />
 
         <Controller
+          name="valor"
+          control={productForm.control}
+          rules={{
+            required: true,
+          }}
+          render={({ field, formState }) => (
+            <NumericFormat
+              value={field.value}
+              onValueChange={(values) => {
+                const { floatValue } = values;
+                field.onChange(floatValue ?? "");
+              }}
+              customInput={TextField}
+              label="Preço"
+              fullWidth
+              allowNegative={false}
+              thousandSeparator="."
+              decimalSeparator=","
+              decimalScale={2}
+              fixedDecimalScale
+              prefix="R$ "
+              variant="standard"
+              valueIsNumericString
+              type="tel"
+              inputMode="numeric"
+              inputRef={(input) => {
+                if (input) {
+                  input.onfocus = () => {
+                    setTimeout(() => input.select(), 0);
+                  };
+                }
+              }}
+              required
+              error={!!formState.errors.valor}
+            />
+          )}
+        />
+
+        <Controller
           name="quantidade"
           control={productForm.control}
           rules={{
@@ -96,23 +129,6 @@ export const ProductModal: React.FC<IProductModalProps> = ({
               required
               onFocus={(e) => e.target.select()}
               error={!!formState.errors.quantidade}
-            />
-          )}
-        />
-
-        <Controller
-          name="ativo"
-          control={productForm.control}
-          render={({ field }) => (
-            <FormControlLabel
-              control={
-                <Switch
-                  size="medium"
-                  checked={field.value ?? true}
-                  onChange={(e) => field.onChange(e.target.checked)}
-                />
-              }
-              label={field.value ? "Ativo" : "Inativo"}
             />
           )}
         />

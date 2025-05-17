@@ -65,31 +65,11 @@ interface IDrawer {
 
 export const Drawer: React.FC<IDrawer> = ({ children }) => {
   const { drawer } = useDrawer();
-
   const theme = useTheme();
-
   const dispatch = useDispatch();
-
   const navigate = useNavigate();
-
   const location = useLocation();
-
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-
-  const [opcaoSelecionada, setOpcaoSelecionada] =
-    React.useState<string>("Transações");
-
-  function handleSelect(rota: string): void {
-    navigate(rota);
-    setOpcaoSelecionada(rota);
-    if (isMobile) {
-      dispatch(setDrawerOpen(false));
-    }
-  }
-
-  React.useEffect(() => {
-    setOpcaoSelecionada(location.pathname);
-  }, [location]);
 
   React.useEffect(() => {
     dispatch(setDrawerOpen(!isMobile));
@@ -121,52 +101,56 @@ export const Drawer: React.FC<IDrawer> = ({ children }) => {
             )}
           </IconButton>
         </DrawerHeader>
+
         {rotas.map((categoria, index) => (
           <Box key={index}>
             <ListSubheader sx={{ backgroundColor: theme.palette.text.primary }}>
               {categoria.categoria}
             </ListSubheader>
-            {categoria.rotas.map((rota) => (
-              <List key={rota.name} disablePadding>
-                <ListItem
-                  disablePadding
-                  onClick={async () => {
-                    if (rota.function) {
-                      await rota.function();
-                    }
-                    handleSelect(rota.route);
-                  }}
-                  sx={{
-                    backgroundColor:
-                      opcaoSelecionada === rota.route
+            {categoria.rotas.map((rota) => {
+              const isActive = location.pathname.startsWith(rota.route);
+              return (
+                <List key={rota.name} disablePadding>
+                  <ListItem
+                    disablePadding
+                    onClick={async () => {
+                      if (rota.function) {
+                        await rota.function();
+                      }
+                      navigate(rota.route);
+                      if (isMobile) {
+                        dispatch(setDrawerOpen(false));
+                      }
+                    }}
+                    sx={{
+                      backgroundColor: isActive
                         ? theme.palette.primary.main
                         : "",
-                    color:
-                      opcaoSelecionada === rota.route
+                      color: isActive
                         ? theme.palette.primary.contrastText
                         : theme.palette.text.primary,
-                    "&:hover": {
-                      opacity: "80%",
-                    },
-                  }}
-                >
-                  <ListItemButton>
-                    <ListItemIcon
-                      sx={{
-                        minWidth: 40,
-                        color:
-                          opcaoSelecionada === rota.route
+                      "&:hover": {
+                        opacity: "80%",
+                      },
+                    }}
+                  >
+                    <ListItemButton>
+                      <ListItemIcon
+                        sx={{
+                          minWidth: 40,
+                          color: isActive
                             ? theme.palette.primary.contrastText
                             : theme.palette.text.primary,
-                      }}
-                    >
-                      {rota.icon}
-                    </ListItemIcon>
-                    <ListItemText primary={rota.name} />
-                  </ListItemButton>
-                </ListItem>
-              </List>
-            ))}
+                        }}
+                      >
+                        {rota.icon}
+                      </ListItemIcon>
+                      <ListItemText primary={rota.name} />
+                    </ListItemButton>
+                  </ListItem>
+                </List>
+              );
+            })}
           </Box>
         ))}
       </MuiDrawer>

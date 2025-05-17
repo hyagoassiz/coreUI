@@ -15,6 +15,8 @@ export const DASHBOARD = {
 
 export const SALES = {
   LIST: `${PROJETO.LIST}/vendas`,
+  REGISTER: `${PROJETO.LIST}/vendas/nova`,
+  EDIT: `${PROJETO.LIST}/vendas/venda/:id`,
 };
 
 export const PRODUCTS = {

@@ -17,5 +17,6 @@ export const BoxContainer = styled(Box)(({ theme }) => ({
 export const StyledBox = styled(Box)(({ theme }) => ({
   display: "flex",
   alignItems: "center",
+  marginLeft: theme.spacing(1),
   gap: theme.spacing(2),
 }));

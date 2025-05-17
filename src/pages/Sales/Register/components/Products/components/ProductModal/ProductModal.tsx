@@ -2,45 +2,46 @@ import { Controller } from "react-hook-form";
 import {
   Box,
   TextField,
-  FormControlLabel,
-  Switch,
   Button,
   Autocomplete,
   ListItem,
   ListItemText,
 } from "@mui/material";
-import { Modal } from "../../../../../components/Modal";
-import { ISaleModalProps } from "./interfaces";
-import { useSalesModal } from "./hooks/useSalesModal";
+import { useProductModal } from "./hooks/useProductModal";
 import { NumericFormat } from "react-number-format";
+import { Modal } from "../../../../../../../components/Modal";
+import { ISaleForm } from "../../../../interfaces";
 
-export const SalesModal: React.FC<ISaleModalProps> = ({
+export interface IProductModalProps {
+  open: boolean;
+  product: ISaleForm["produtos"][0] | null;
+  onClose(): void;
+}
+
+export const ProductModal: React.FC<IProductModalProps> = ({
   open,
-  sale,
+  product,
   onClose,
 }) => {
   const {
     produtos,
-    saleForm,
-    calculateAndSetTotalSale,
+    productForm,
+    calculateAndSetTotal,
     calculateAndSetUnitPrice,
-    submitSaleForm,
-  } = useSalesModal({
-    onClose,
-    sale,
-  });
+    onSubmitProductForm,
+  } = useProductModal({ product, onClose });
 
   return (
     <Modal
       open={open}
       style={{ width: "auto", height: "auto", minWidth: 480 }}
-      title={`${sale?.id ? "Editar" : "Nova"} venda`}
+      title={`${product?.id ? "Editar" : "Adicionar"} produto`}
       buttons={
         <>
           <Button variant="text" onClick={onClose}>
             Fechar
           </Button>
-          <Button variant="contained" onClick={submitSaleForm}>
+          <Button variant="contained" onClick={onSubmitProductForm}>
             Salvar
           </Button>
         </>
@@ -48,33 +49,8 @@ export const SalesModal: React.FC<ISaleModalProps> = ({
     >
       <Box display="flex" flexDirection="column" gap={2} mt={2}>
         <Controller
-          name="data"
-          control={saleForm.control}
-          rules={{ required: true }}
-          render={({ field, fieldState }) => (
-            <TextField
-              label="Data"
-              type="date"
-              variant="standard"
-              color="info"
-              onChange={field.onChange}
-              value={field.value ?? ""}
-              inputProps={{
-                maxLength: 30,
-              }}
-              required
-              error={!!fieldState.error}
-              fullWidth
-              InputLabelProps={{
-                shrink: true,
-              }}
-            />
-          )}
-        />
-
-        <Controller
           name="produto"
-          control={saleForm.control}
+          control={productForm.control}
           rules={{ required: true }}
           render={({ field, fieldState }) => (
             <Autocomplete
@@ -85,8 +61,8 @@ export const SalesModal: React.FC<ISaleModalProps> = ({
               onChange={(_, newValue) => {
                 field.onChange(newValue);
                 const valor = newValue?.valor ?? 0;
-                saleForm.setValue("valorUnitario", valor);
-                calculateAndSetTotalSale(undefined, valor);
+                productForm.setValue("valorUnitario", valor);
+                calculateAndSetTotal(undefined, valor);
               }}
               value={field.value ?? null}
               noOptionsText="Nenhum resultado encontrado."
@@ -94,7 +70,7 @@ export const SalesModal: React.FC<ISaleModalProps> = ({
                 <ListItem {...props} key={option.id}>
                   <ListItemText
                     primary={option.nome}
-                    secondary={`Código/SKU: ${option.codigo}`}
+                    secondary={`Código/SKU: ${option.codigo} - Saldo: ${option.quantidade}`}
                     secondaryTypographyProps={{ fontSize: "12px" }}
                   />
                 </ListItem>
@@ -117,14 +93,16 @@ export const SalesModal: React.FC<ISaleModalProps> = ({
         <Box display="flex" gap={2}>
           <Controller
             name="quantidade"
-            control={saleForm.control}
+            control={productForm.control}
             rules={{ required: true, validate: (value) => value > 0 }}
             render={({ field, formState }) => (
               <NumericFormat
                 value={field.value}
-                onValueChange={({ floatValue }) => {
-                  field.onChange(floatValue ?? "");
-                  calculateAndSetTotalSale(floatValue);
+                onValueChange={({ floatValue }, { event }) => {
+                  if (event?.isTrusted) {
+                    field.onChange(floatValue ?? "");
+                    calculateAndSetTotal(floatValue);
+                  }
                 }}
                 customInput={TextField}
                 label="Quantidade"
@@ -145,7 +123,7 @@ export const SalesModal: React.FC<ISaleModalProps> = ({
 
           <Controller
             name="valorUnitario"
-            control={saleForm.control}
+            control={productForm.control}
             rules={{
               required: true,
               validate: (value) => value > 0,
@@ -161,10 +139,12 @@ export const SalesModal: React.FC<ISaleModalProps> = ({
                 decimalScale={2}
                 fixedDecimalScale
                 value={field.value ?? null}
-                onValueChange={({ floatValue }) => {
-                  const valor = floatValue ?? 0;
-                  field.onChange(valor);
-                  calculateAndSetTotalSale(undefined, valor);
+                onValueChange={({ floatValue }, { event }) => {
+                  if (event?.isTrusted) {
+                    const valor = floatValue ?? 0;
+                    field.onChange(valor);
+                    calculateAndSetTotal(undefined, valor);
+                  }
                 }}
                 decimalSeparator=","
                 thousandSeparator="."
@@ -177,15 +157,15 @@ export const SalesModal: React.FC<ISaleModalProps> = ({
           />
 
           <Controller
-            name="valorVenda"
-            control={saleForm.control}
+            name="valorTotal"
+            control={productForm.control}
             rules={{
               required: true,
               validate: (value) => value > 0,
             }}
             render={({ field, fieldState }) => (
               <NumericFormat
-                label="Total Venda"
+                label="Total"
                 variant="standard"
                 customInput={TextField}
                 prefix={"R$ "}
@@ -194,10 +174,12 @@ export const SalesModal: React.FC<ISaleModalProps> = ({
                 decimalScale={2}
                 fixedDecimalScale
                 value={field.value ?? null}
-                onValueChange={({ floatValue }) => {
-                  const valor = floatValue ?? 0;
-                  field.onChange(valor);
-                  calculateAndSetUnitPrice(valor);
+                onValueChange={({ floatValue }, { event }) => {
+                  if (event?.isTrusted) {
+                    const valor = floatValue ?? 0;
+                    field.onChange(valor);
+                    calculateAndSetUnitPrice(valor);
+                  }
                 }}
                 decimalSeparator=","
                 thousandSeparator="."
@@ -209,45 +191,6 @@ export const SalesModal: React.FC<ISaleModalProps> = ({
             )}
           />
         </Box>
-
-        <Controller
-          name="observacao"
-          control={saleForm.control}
-          rules={{ required: false }}
-          render={({ field, fieldState }) => (
-            <TextField
-              label="Observação"
-              name="observacao"
-              type="text"
-              variant="standard"
-              color="info"
-              onChange={field.onChange}
-              value={field.value ?? ""}
-              inputProps={{
-                maxLength: 30,
-              }}
-              error={!!fieldState.error}
-              fullWidth
-            />
-          )}
-        />
-
-        <Controller
-          name="pago"
-          control={saleForm.control}
-          render={({ field }) => (
-            <FormControlLabel
-              control={
-                <Switch
-                  size="medium"
-                  checked={field.value ?? true}
-                  onChange={(e) => field.onChange(e.target.checked)}
-                />
-              }
-              label={field.value ? "Pago" : "Não Pago"}
-            />
-          )}
-        />
       </Box>
     </Modal>
   );

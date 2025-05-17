@@ -10,7 +10,7 @@ import { DashboardRoute } from "../pages/Dashboard/List";
 import { ProductsRoute } from "../pages/Products/List";
 import { AboutRoute } from "../pages/About/List";
 import { SettingsRoute } from "../pages/Settings/List";
-import { SalesRoute } from "../pages/Sales";
+import { SalesRegisterRoute, SalesRoute } from "../pages/Sales";
 
 const LayoutWrapper = () => (
   <PageLayout>
@@ -56,6 +56,24 @@ export const AppRoutes = () => {
             element={
               <ProtectedRoute>
                 <SalesRoute />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path={PATHS.SALES.REGISTER}
+            element={
+              <ProtectedRoute>
+                <SalesRegisterRoute />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path={PATHS.SALES.EDIT}
+            element={
+              <ProtectedRoute>
+                <SalesRegisterRoute />
               </ProtectedRoute>
             }
           />
