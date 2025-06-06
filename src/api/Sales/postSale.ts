@@ -8,9 +8,7 @@ import {
 import { db } from "../../firebaseConfig";
 import { getAuth } from "firebase/auth";
 
-export async function postSale(
-  payload: ISalePayloadApi
-): Promise<DocumentReference> {
+export async function postSale(payload: ISaleApi): Promise<DocumentReference> {
   const auth = getAuth();
   const currentUser = auth.currentUser;
 

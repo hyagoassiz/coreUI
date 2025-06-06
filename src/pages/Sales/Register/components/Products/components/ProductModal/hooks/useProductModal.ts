@@ -1,17 +1,17 @@
 import { useQuery } from "@tanstack/react-query";
 import { useForm, useFormContext, UseFormReturn } from "react-hook-form";
 import { useQueryGetProducts } from "../../../../../../../../api/Products/hooks/useQueryGetProducts";
-import { ISaleForm } from "../../../../../interfaces";
 import { useEffect, useId } from "react";
+import { useNotification } from "../../../../../../../../hooks/useNotification";
 
 interface IUseProductModalProps {
   onClose(): void;
-  product: ISaleForm["produtos"][0] | null;
+  product: ISaleApi["produtos"][0] | null;
 }
 
 interface IUseProductModalReturn {
   produtos: IProductResponseApi[] | undefined;
-  productForm: UseFormReturn<ISaleForm["produtos"][0]>;
+  productForm: UseFormReturn<ISaleApi["produtos"][0]>;
   calculateAndSetTotal(quantidade?: number, valorUnitario?: number): void;
   calculateAndSetUnitPrice(totalVenda: number): void;
   onSubmitProductForm(): void;
@@ -21,11 +21,13 @@ export const useProductModal = ({
   onClose,
   product,
 }: IUseProductModalProps): IUseProductModalReturn => {
-  const saleForm = useFormContext<ISaleForm>();
+  const saleForm = useFormContext<ISaleApi>();
+
+  const { showSnackBar } = useNotification();
 
   const generatedId = useId();
 
-  const productForm = useForm<ISaleForm["produtos"][0]>({
+  const productForm = useForm<ISaleApi["produtos"][0]>({
     defaultValues: {
       quantidade: 1,
       valorUnitario: 0,
@@ -65,7 +67,7 @@ export const useProductModal = ({
   }
 
   function calculateTotalSale(
-    products: ISaleForm["produtos"],
+    products: ISaleApi["produtos"],
     discount?: number
   ): number {
     const _discount = discount ?? 0;
@@ -82,7 +84,7 @@ export const useProductModal = ({
     productForm.handleSubmit((data) => {
       const products = saleForm.getValues("produtos") ?? [];
 
-      const newProduct: ISaleForm["produtos"][0] = {
+      const newProduct: ISaleApi["produtos"][0] = {
         ...data,
         id: data.id ?? generatedId,
       };
@@ -98,13 +100,18 @@ export const useProductModal = ({
             ]
           : [...products, newProduct];
 
-      const valorVenda = calculateTotalSale(updatedProducts);
+      const valorTotal = calculateTotalSale(updatedProducts);
 
       saleForm.reset((prevState) => ({
         ...prevState,
         produtos: updatedProducts,
-        valorVenda,
+        valorTotal,
       }));
+
+      showSnackBar(
+        `Produto ${!data.id ? "adicionado" : "editado"} com sucesso!`,
+        "success"
+      );
 
       onClose();
     })();

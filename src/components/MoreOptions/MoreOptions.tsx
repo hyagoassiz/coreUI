@@ -1,16 +1,17 @@
 import { MoreVert } from "@mui/icons-material";
-import { IconButton, Menu, MenuItem, Tooltip } from "@mui/material";
+import { IconButton, Menu, Tooltip } from "@mui/material";
+import { ReactNode } from "react";
 import useMoreOptions from "./hooks/useMoreOptions";
 
-interface IMoreOptions {
-  options: {
-    label: string;
-    action(): void;
-  }[];
+interface MoreOptionsProps {
+  children: ReactNode;
   disabled?: boolean;
 }
 
-export const MoreOptions = ({ options, disabled = false }: IMoreOptions) => {
+export const MoreOptions = ({
+  children,
+  disabled = false,
+}: MoreOptionsProps) => {
   const { handleClick, anchorEl, handleClose } = useMoreOptions();
 
   return (
@@ -37,18 +38,8 @@ export const MoreOptions = ({ options, disabled = false }: IMoreOptions) => {
           horizontal: "right",
         }}
       >
-        {options.map((option, index) => (
-          <MenuItem
-            key={index}
-            onClick={() => {
-              option.action();
-              handleClose();
-            }}
-            sx={{ fontSize: "14px" }}
-          >
-            {option.label}
-          </MenuItem>
-        ))}
+        {/* Aqui você pode acessar handleClose via contexto se quiser */}
+        {children}
       </Menu>
     </>
   );

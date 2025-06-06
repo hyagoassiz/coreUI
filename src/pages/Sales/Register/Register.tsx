@@ -1,23 +1,43 @@
 import { Controller, FormProvider } from "react-hook-form";
-import { PageTitle } from "../../../components/PageTitle";
-import { Box, TextField, Grid, Paper, Button } from "@mui/material";
+import { Box, TextField, Grid, Button, Autocomplete } from "@mui/material";
 import { Products } from "./components/Products";
 import { NumericFormat } from "react-number-format";
 import { useRegister } from "./hooks/useRegister";
+import { PageTitle } from "../../../components/PageTitleV2";
+import { Frame } from "../../../components/Frame";
 
 export const Register: React.FC = () => {
-  const { saleForm, calculateTotalSale, handleCancelSaleRegistration } =
-    useRegister();
+  const {
+    idEditMode,
+    saleForm,
+    statusOptions,
+    calculateTotalSale,
+    handleCancelSaleRegistration,
+    submitSaleForm,
+  } = useRegister();
 
   return (
     <FormProvider {...saleForm}>
       <PageTitle
-        title={`${saleForm.getValues("id") ? "Editar" : "Nova"} venda`}
+        backButton={handleCancelSaleRegistration}
+        title={`Vendas / ${saleForm.getValues("id") ? "Editar" : "Nova"} venda`}
+        buttons={
+          <>
+            <Button
+              variant="contained"
+              color="primary"
+              type="submit"
+              disabled={!idEditMode}
+              onClick={submitSaleForm}
+            >
+              Salvar
+            </Button>
+          </>
+        }
       />
-
-      <Paper sx={{ p: { xs: 2, sm: 4 }, mt: 2 }}>
+      <Frame padding="32px 16px 16px 16px">
         <Grid container spacing={3}>
-          <Grid item xs={12} sm={4}>
+          <Grid item xs={12} sm={3}>
             <Controller
               name="data"
               control={saleForm.control}
@@ -26,24 +46,24 @@ export const Register: React.FC = () => {
                 <TextField
                   label="Data da Venda"
                   type="date"
-                  variant="standard"
                   color="info"
                   fullWidth
                   onChange={field.onChange}
                   value={field.value ?? ""}
                   required
                   error={!!fieldState.error}
+                  disabled={!idEditMode}
                   InputLabelProps={{ shrink: true }}
                 />
               )}
             />
           </Grid>
 
-          <Grid item xs={12} sm={4}>
+          <Grid item xs={12} sm={3}>
             <Controller
               name="desconto"
               control={saleForm.control}
-              rules={{ required: true }}
+              rules={{ required: false }}
               render={({ field, formState }) => (
                 <NumericFormat
                   value={field.value}
@@ -53,7 +73,7 @@ export const Register: React.FC = () => {
                       saleForm.getValues("produtos"),
                       floatValue
                     );
-                    saleForm.setValue("valorVenda", totalSale);
+                    saleForm.setValue("valorTotal", totalSale);
                   }}
                   customInput={TextField}
                   label="Desconto"
@@ -64,20 +84,19 @@ export const Register: React.FC = () => {
                   decimalScale={2}
                   fixedDecimalScale
                   prefix="R$ "
-                  variant="standard"
                   valueIsNumericString
                   type="tel"
                   inputMode="numeric"
-                  required
+                  disabled={!idEditMode}
                   error={!!formState.errors.desconto}
                 />
               )}
             />
           </Grid>
 
-          <Grid item xs={12} sm={4}>
+          <Grid item xs={12} sm={3}>
             <Controller
-              name="valorVenda"
+              name="valorTotal"
               control={saleForm.control}
               rules={{ required: true }}
               render={({ field, formState }) => (
@@ -95,13 +114,45 @@ export const Register: React.FC = () => {
                   decimalScale={2}
                   fixedDecimalScale
                   prefix="R$ "
-                  variant="standard"
                   valueIsNumericString
                   type="tel"
                   inputMode="numeric"
                   required
-                  error={!!formState.errors.valorVenda}
+                  error={!!formState.errors.valorTotal}
+                  disabled={!idEditMode}
                   InputProps={{ readOnly: true }}
+                />
+              )}
+            />
+          </Grid>
+
+          <Grid item xs={12} sm={3}>
+            <Controller
+              name="status"
+              control={saleForm.control}
+              rules={{ required: true }}
+              render={({ field, fieldState }) => (
+                <Autocomplete
+                  disablePortal
+                  id="status"
+                  options={statusOptions ?? []}
+                  getOptionLabel={(option) => option.nome || ""}
+                  onChange={(_, newValue) => {
+                    field.onChange(newValue);
+                  }}
+                  value={field.value ?? null}
+                  noOptionsText="Nenhum resultado encontrado."
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      color="info"
+                      label="Situação"
+                      required
+                      error={!!fieldState.error}
+                    />
+                  )}
+                  disabled={!idEditMode}
+                  fullWidth
                 />
               )}
             />
@@ -109,10 +160,10 @@ export const Register: React.FC = () => {
         </Grid>
 
         <Box mt={4}>
-          <Products />
+          <Products idEditMode={idEditMode} />
         </Box>
 
-        <Grid container spacing={3} mt={1}>
+        <Grid spacing={3} mt={1}>
           <Grid item xs={12}>
             <Controller
               name="observacao"
@@ -120,38 +171,18 @@ export const Register: React.FC = () => {
               render={({ field, fieldState }) => (
                 <TextField
                   label="Observação"
-                  variant="outlined"
                   color="info"
                   fullWidth
                   onChange={field.onChange}
                   value={field.value ?? ""}
+                  disabled={!idEditMode}
                   error={!!fieldState.error}
                 />
               )}
             />
           </Grid>
-
-          <Grid item xs={12}>
-            <Box
-              display="flex"
-              flexDirection={{ xs: "column", sm: "row" }}
-              justifyContent="flex-end"
-              gap={2}
-            >
-              <Button
-                variant="text"
-                color="inherit"
-                onClick={handleCancelSaleRegistration}
-              >
-                Cancelar
-              </Button>
-              <Button variant="contained" color="primary" type="submit">
-                Salvar
-              </Button>
-            </Box>
-          </Grid>
         </Grid>
-      </Paper>
+      </Frame>
     </FormProvider>
   );
 };

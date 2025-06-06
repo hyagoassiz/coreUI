@@ -1,9 +1,5 @@
 import { useForm } from "react-hook-form";
-import {
-  IProductForm,
-  IUseProductModalProps,
-  IUseProductModalReturn,
-} from "../interfaces";
+import { IUseProductModalProps, IUseProductModalReturn } from "../interfaces";
 import { useNotification } from "../../../../../../hooks/useNotification";
 import { useLoading } from "../../../../../../hooks/useLoading";
 import { postProduct } from "../../../../../../api/Products/postProduct";
@@ -16,7 +12,7 @@ export const useProductModal = ({
   product,
   onClose,
 }: IUseProductModalProps): IUseProductModalReturn => {
-  const productForm = useForm<IProductForm>({ defaultValues: { ativo: true } });
+  const productForm = useForm<IProductPayloadApi>();
 
   const { showSnackBar } = useNotification();
 
@@ -28,7 +24,7 @@ export const useProductModal = ({
     if (product?.id) {
       (Object.keys(product) as (keyof IProductResponseApi)[]).forEach((key) => {
         productForm.setValue(
-          key as keyof IProductForm,
+          key as keyof IProductPayloadApi,
           product[key] as IProductResponseApi[keyof IProductResponseApi]
         );
       });
@@ -49,7 +45,6 @@ export const useProductModal = ({
             nome: data.nome,
             codigo: data.codigo,
             valor: data.valor,
-            ativo: data.ativo,
             quantidade: data.quantidade,
             createdAt: data.createdAt ?? now,
             updatedAt: now,

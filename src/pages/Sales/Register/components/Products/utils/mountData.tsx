@@ -1,14 +1,18 @@
-import { Typography } from "@mui/material";
-import { ISaleForm } from "../../../interfaces";
+import { MenuItem, Typography } from "@mui/material";
 import { NumericFormat } from "react-number-format";
 import { MoreOptions } from "../../../../../../components/MoreOptions";
 
 interface IMountData {
-  products: ISaleForm["produtos"] | undefined;
-  handleEditProduct(product: ISaleForm["produtos"][0]): void;
+  products: ISaleApi["produtos"] | undefined;
+  idEditMode: boolean;
+  handleEditProduct(product: ISaleApi["produtos"][0]): void;
 }
 
-export function mountData({ products, handleEditProduct }: IMountData): any[] {
+export function mountData({
+  products,
+  idEditMode,
+  handleEditProduct,
+}: IMountData): any[] {
   if (products?.length) {
     return products.map((product) => ({
       ...product,
@@ -41,14 +45,15 @@ export function mountData({ products, handleEditProduct }: IMountData): any[] {
       ),
       options: (
         <>
-          <MoreOptions
-            options={[
-              {
-                label: "Editar",
-                action: () => handleEditProduct(product),
-              },
-            ]}
-          />
+          <MoreOptions disabled={!idEditMode}>
+            <MenuItem
+              onClick={() => {
+                handleEditProduct(product);
+              }}
+            >
+              Editar
+            </MenuItem>
+          </MoreOptions>
         </>
       ),
     }));

@@ -1,56 +1,77 @@
-import { Typography } from "@mui/material";
-import { MoreOptions } from "../../../../components/MoreOptions";
+import { ListItemText, MenuItem, Typography } from "@mui/material";
+import dayjs from "dayjs";
 import { NumericFormat } from "react-number-format";
-import { PowerIcon } from "../../../../components/PowerIcon";
-
+import { MoreOptions } from "../../../../components/MoreOptions";
+import { getStatusChip } from "../../../../utils/getStatusIcon";
 interface IMountData {
-  products: IProductResponseApi[] | undefined;
-  handleActivateProduct(product: IProductResponseApi): void;
-  handleDeactivateProduct(product: IProductResponseApi): void;
-  handleEditProduct(product: IProductResponseApi): void;
+  sales: ISaleResponseApi[] | undefined;
+  handleCancelSale(sale: ISaleResponseApi): void;
+  handleEditSale(id: string): void;
 }
 
 export function mountData({
-  products,
-  handleActivateProduct,
-  handleDeactivateProduct,
-  handleEditProduct,
+  sales,
+  handleCancelSale,
+  handleEditSale,
 }: IMountData): any[] {
-  if (products?.length) {
-    return products.map((product) => ({
-      ...product,
-      valor: (
+  if (sales?.length) {
+    return sales.map((sale) => ({
+      ...sale,
+      data: dayjs(sale.data).format("DD/MM/YYYY"),
+      createdAt: (
+        <ListItemText
+          primary={dayjs(sale.createdAt).format("DD/MM/YYYY")}
+          secondary={dayjs(sale.createdAt).format("HH:mm")}
+          primaryTypographyProps={{ fontSize: "14px" }}
+          secondaryTypographyProps={{ fontSize: "12px" }}
+        />
+      ),
+      valorTotal: (
         <Typography variant="body2">
           <NumericFormat
-            value={product.valor}
+            value={sale.valorTotal}
             prefix={"R$ "}
             decimalScale={2}
             fixedDecimalScale={true}
             decimalSeparator=","
-            thousandSeparator={"."}
+            thousandSeparator="."
             displayType="text"
           />
         </Typography>
       ),
+      status: getStatusChip(sale.status),
       options: (
-        <>
-          {product.ativo ? (
-            <MoreOptions
-              options={[
-                {
-                  label: "Editar",
-                  action: () => handleEditProduct(product),
-                },
-                {
-                  label: "Inativar",
-                  action: () => handleDeactivateProduct(product),
-                },
-              ]}
-            />
-          ) : (
-            <PowerIcon onClick={() => handleActivateProduct(product)} />
+        <MoreOptions>
+          {sale.status.id === "ORCAMENTO" && (
+            <MenuItem
+              onClick={() => {
+                handleEditSale(sale.id);
+              }}
+            >
+              Editar
+            </MenuItem>
           )}
-        </>
+
+          {(sale.status.id === "ORCAMENTO" || sale.status.id === "VENDA") && (
+            <MenuItem
+              onClick={() => {
+                handleCancelSale(sale);
+              }}
+            >
+              Cancelar
+            </MenuItem>
+          )}
+
+          {(sale.status.id === "VENDA" || sale.status.id === "CANCELADO") && (
+            <MenuItem
+              onClick={() => {
+                handleEditSale(sale.id);
+              }}
+            >
+              Visualizar
+            </MenuItem>
+          )}
+        </MoreOptions>
       ),
     }));
   }

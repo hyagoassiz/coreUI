@@ -8,7 +8,7 @@ interface IPageTitle {
 export const PageTitle: React.FC<IPageTitle> = ({ title, subTitle }) => {
   return (
     <Box mb={2.5}>
-      <Typography variant="h4" component="h1">
+      <Typography variant="h5" component="h1">
         {title}
       </Typography>
       {subTitle && (

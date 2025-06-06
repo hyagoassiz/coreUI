@@ -39,7 +39,6 @@ export const ProductModal: React.FC<IProductModalProps> = ({
           render={({ field, formState }) => (
             <TextField
               {...field}
-              variant="standard"
               label="Nome do produto"
               fullWidth
               required
@@ -56,7 +55,6 @@ export const ProductModal: React.FC<IProductModalProps> = ({
             <TextField
               {...field}
               label="Código/SKU"
-              variant="standard"
               fullWidth
               required
               error={!!formState.errors.codigo}
@@ -86,7 +84,6 @@ export const ProductModal: React.FC<IProductModalProps> = ({
               decimalScale={2}
               fixedDecimalScale
               prefix="R$ "
-              variant="standard"
               valueIsNumericString
               type="tel"
               inputMode="numeric"
@@ -123,7 +120,6 @@ export const ProductModal: React.FC<IProductModalProps> = ({
               thousandSeparator="."
               decimalSeparator=","
               decimalScale={0}
-              variant="standard"
               valueIsNumericString
               inputMode="numeric"
               required

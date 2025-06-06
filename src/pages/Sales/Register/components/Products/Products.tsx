@@ -1,4 +1,4 @@
-import { Button, Divider, Typography } from "@mui/material";
+import { Button } from "@mui/material";
 import { DataTable } from "../../../../../components/DataTable/DataTable";
 import { productColumns } from "./constants/constants";
 import { mountData } from "./utils/mountData";
@@ -7,7 +7,11 @@ import { Add, Delete } from "@mui/icons-material";
 import { ProductModal } from "./components/ProductModal";
 import { useProducts } from "./hooks/useProducts";
 
-export const Products: React.FC = () => {
+interface IProductsProps {
+  idEditMode: boolean;
+}
+
+export const Products: React.FC<IProductsProps> = ({ idEditMode }) => {
   const {
     productModalState,
     saleForm,
@@ -22,18 +26,16 @@ export const Products: React.FC = () => {
   return (
     <>
       <ToolbarContainer
+        showTitleDivider
+        title={`Produtos (${saleForm.getValues("produtos")?.length ?? 0})`}
         buttons={
           <>
-            <Typography fontWeight={600} fontSize="16px">
-              {`Produtos (${saleForm.getValues("produtos")?.length ?? 0})`}
-            </Typography>
-            <Divider orientation="vertical" flexItem sx={{ ml: 0.5, mr: 2 }} />
-
             <Button
               startIcon={<Add />}
               color="primary"
-              variant="text"
+              variant="outlined"
               onClick={handleAddProduct}
+              disabled={!idEditMode}
             >
               Adicionar
             </Button>
@@ -41,8 +43,8 @@ export const Products: React.FC = () => {
             <Button
               startIcon={<Delete />}
               color="primary"
-              variant="text"
-              disabled={selectedProducts.length === 0}
+              variant="outlined"
+              disabled={selectedProducts.length === 0 || !idEditMode}
               onClick={deleteSelectedProducts}
             >
               Excluir
@@ -52,12 +54,12 @@ export const Products: React.FC = () => {
       />
       <DataTable
         disablePagination
-        selectionMode="multiple"
-        disableShadow
+        selectionMode={idEditMode ? "multiple" : undefined}
         columns={productColumns}
         data={mountData({
           products: saleForm.getValues("produtos"),
           handleEditProduct,
+          idEditMode,
         })}
         textForEmptyData="Nenhum produto selecionado."
         selectedItems={selectedProducts}

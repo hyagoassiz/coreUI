@@ -1,4 +1,4 @@
-import { Typography } from "@mui/material";
+import { MenuItem, Typography } from "@mui/material";
 import { MoreOptions } from "../../../../components/MoreOptions";
 import { NumericFormat } from "react-number-format";
 import { PowerIcon } from "../../../../components/PowerIcon";
@@ -45,18 +45,22 @@ export function mountData({
       options: (
         <>
           {product.ativo ? (
-            <MoreOptions
-              options={[
-                {
-                  label: "Editar",
-                  action: () => handleEditProduct(product),
-                },
-                {
-                  label: "Inativar",
-                  action: () => handleDeactivateProduct(product),
-                },
-              ]}
-            />
+            <MoreOptions>
+              <MenuItem
+                onClick={() => {
+                  handleEditProduct(product);
+                }}
+              >
+                Editar
+              </MenuItem>
+              <MenuItem
+                onClick={() => {
+                  handleDeactivateProduct(product);
+                }}
+              >
+                Inativar
+              </MenuItem>
+            </MoreOptions>
           ) : (
             <PowerIcon onClick={() => handleActivateProduct(product)} />
           )}

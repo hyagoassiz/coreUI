@@ -1,34 +1,36 @@
 import { Dispatch, SetStateAction, useState } from "react";
 import { useFormContext, UseFormReturn } from "react-hook-form";
-import { ISaleForm } from "../../../interfaces";
+import { useNotification } from "../../../../../../hooks/useNotification";
 
 interface IUseProductsReturn {
   productModalState: {
     open: boolean;
-    product: ISaleForm["produtos"][0] | null;
+    product: ISaleApi["produtos"][0] | null;
   };
-  saleForm: UseFormReturn<ISaleForm>;
-  selectedProducts: ISaleForm["produtos"];
+  saleForm: UseFormReturn<ISaleApi>;
+  selectedProducts: ISaleApi["produtos"];
   handleAddProduct(): void;
   handleCloseProductModal(): void;
-  handleEditProduct(product: ISaleForm["produtos"][0]): void;
+  handleEditProduct(product: ISaleApi["produtos"][0]): void;
   deleteSelectedProducts(): void;
-  setSelectedProducts: Dispatch<SetStateAction<ISaleForm["produtos"]>>;
+  setSelectedProducts: Dispatch<SetStateAction<ISaleApi["produtos"]>>;
 }
 
 export const useProducts = (): IUseProductsReturn => {
   const [productModalState, setProductModalState] = useState<{
     open: boolean;
-    product: ISaleForm["produtos"][0] | null;
+    product: ISaleApi["produtos"][0] | null;
   }>({ open: false, product: null });
   const [selectedProducts, setSelectedProducts] = useState<
-    ISaleForm["produtos"]
+    ISaleApi["produtos"]
   >([]);
 
-  const saleForm = useFormContext<ISaleForm>();
+  const saleForm = useFormContext<ISaleApi>();
+
+  const { showSnackBar } = useNotification();
 
   function calculateTotalSale(
-    products: ISaleForm["produtos"],
+    products: ISaleApi["produtos"],
     discount?: number
   ): number {
     const _discount = discount ?? 0;
@@ -49,7 +51,7 @@ export const useProducts = (): IUseProductsReturn => {
     setProductModalState({ open: false, product: null });
   }
 
-  function handleEditProduct(product: ISaleForm["produtos"][0]): void {
+  function handleEditProduct(product: ISaleApi["produtos"][0]): void {
     setProductModalState({ open: true, product: product });
   }
 
@@ -61,7 +63,7 @@ export const useProducts = (): IUseProductsReturn => {
         !selectedProducts.some((selected) => selected.id === product.id)
     );
 
-    const valorVenda = calculateTotalSale(
+    const valorTotal = calculateTotalSale(
       updatedProducts,
       saleForm.getValues("desconto")
     );
@@ -69,8 +71,17 @@ export const useProducts = (): IUseProductsReturn => {
     saleForm.reset((prevState) => ({
       ...prevState,
       produtos: updatedProducts,
-      valorVenda: valorVenda,
+      valorTotal,
     }));
+
+    const teste = selectedProducts.length > 0;
+
+    console.log(selectedProducts.length);
+
+    showSnackBar(
+      `Produto${teste ? "" : "s"} removido${teste ? "" : "s"} com sucesso!`,
+      "success"
+    );
 
     setSelectedProducts([]);
   }

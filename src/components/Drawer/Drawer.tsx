@@ -43,6 +43,8 @@ const Main = ({
           duration: theme.transitions.duration.leavingScreen,
         }),
         marginLeft: !isMobile && open ? 0 : !isMobile ? `-${240}px` : 0,
+        backgroundColor: theme.palette.grey[100],
+        minHeight: "100vh",
       }}
     >
       <DrawerHeader />

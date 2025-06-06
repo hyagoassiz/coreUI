@@ -10,11 +10,10 @@ import {
 import { useProductModal } from "./hooks/useProductModal";
 import { NumericFormat } from "react-number-format";
 import { Modal } from "../../../../../../../components/Modal";
-import { ISaleForm } from "../../../../interfaces";
 
 export interface IProductModalProps {
   open: boolean;
-  product: ISaleForm["produtos"][0] | null;
+  product: ISaleApi["produtos"][0] | null;
   onClose(): void;
 }
 
@@ -78,7 +77,6 @@ export const ProductModal: React.FC<IProductModalProps> = ({
               renderInput={(params) => (
                 <TextField
                   {...params}
-                  variant="standard"
                   color="info"
                   label="Produto"
                   required
@@ -111,7 +109,6 @@ export const ProductModal: React.FC<IProductModalProps> = ({
                 thousandSeparator="."
                 decimalSeparator=","
                 decimalScale={0}
-                variant="standard"
                 valueIsNumericString
                 inputMode="numeric"
                 required
@@ -131,7 +128,6 @@ export const ProductModal: React.FC<IProductModalProps> = ({
             render={({ field, fieldState }) => (
               <NumericFormat
                 label="Valor Unitário"
-                variant="standard"
                 customInput={TextField}
                 prefix={"R$ "}
                 fullWidth
@@ -166,7 +162,6 @@ export const ProductModal: React.FC<IProductModalProps> = ({
             render={({ field, fieldState }) => (
               <NumericFormat
                 label="Total"
-                variant="standard"
                 customInput={TextField}
                 prefix={"R$ "}
                 fullWidth

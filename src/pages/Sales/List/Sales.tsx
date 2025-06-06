@@ -1,30 +1,64 @@
 import { Button } from "@mui/material";
-import { PageTitle } from "../../../components/PageTitle";
-import { ToolbarContainer } from "../../../components/ToolbarContainer";
 import { useList } from "./hooks/useList";
 import { Add } from "@mui/icons-material";
+import { DataTable } from "../../../components/DataTable/DataTable";
+import { salesColumns } from "./constants/constants";
+import { mountData } from "./utils/mountData";
+import { CancelSaleModal } from "./components/CancelSaleModal";
+import { PageTitle } from "../../../components/PageTitleV2";
+import { Frame } from "../../../components/Frame";
+import { ToolbarContainer } from "../../../components/ToolbarContainer";
 
 export const Sales: React.FC = () => {
-  const { handleAddSale } = useList();
+  const {
+    sales,
+    cancelSaleStateModal,
+    handleAddSale,
+    handleCancelSale,
+    closeCancelSaleModal,
+    handleEditSale,
+  } = useList();
 
   return (
     <>
-      <PageTitle title="Vendas" subTitle="Realize as vendas de seus produtos" />
+      <PageTitle title={`Vendas`} />
 
-      <ToolbarContainer
-        buttons={
-          <>
-            <Button
-              startIcon={<Add />}
-              color="primary"
-              variant="contained"
-              onClick={handleAddSale}
-            >
-              Novo
-            </Button>
-          </>
-        }
-      />
+      <Frame>
+        <ToolbarContainer
+          showDividers
+          showTitleDivider
+          title={`Total de Vendas (${sales?.length ?? 0})`}
+          buttons={
+            <>
+              <Button
+                startIcon={<Add />}
+                color="primary"
+                variant="outlined"
+                onClick={handleAddSale}
+              >
+                Novo
+              </Button>
+            </>
+          }
+        />
+        <DataTable
+          columns={salesColumns}
+          data={mountData({
+            sales,
+            handleCancelSale,
+            handleEditSale,
+          })}
+          textForEmptyData="Nenhum produto encontrado."
+        />
+      </Frame>
+
+      {cancelSaleStateModal.open && (
+        <CancelSaleModal
+          open={cancelSaleStateModal.open}
+          sale={cancelSaleStateModal.sale}
+          onClose={closeCancelSaleModal}
+        />
+      )}
     </>
   );
 };

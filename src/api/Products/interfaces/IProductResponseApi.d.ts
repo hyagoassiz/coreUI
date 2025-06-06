@@ -5,7 +5,6 @@ interface IProductResponseApi {
   valor: number;
   ativo: boolean;
   quantidade: number;
-  usuario: string;
   createdAt: string;
   updatedAt: string;
 }

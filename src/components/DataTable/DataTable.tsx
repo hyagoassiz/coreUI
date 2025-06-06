@@ -2,7 +2,6 @@ import {
   Box,
   Checkbox,
   Pagination,
-  Paper,
   Stack,
   TableBody,
   TableContainer,
@@ -34,8 +33,8 @@ interface IDataTable {
   selectedItems?: any[];
   onSelectionChange?: (selected: any[]) => void;
   disablePagination?: boolean;
-  disableShadow?: boolean;
-  tableHeight?: number | string; // nova prop
+  tableHeight?: number | string;
+  withBorder?: boolean; // ⬅️ nova prop
 }
 
 export const DataTable: React.FC<IDataTable> = ({
@@ -48,8 +47,8 @@ export const DataTable: React.FC<IDataTable> = ({
   selectedItems,
   onSelectionChange,
   disablePagination = false,
-  disableShadow = false,
   tableHeight,
+  withBorder,
 }) => {
   const { paginatedData, totalPages, page, setPage } = useDataTable({ data });
   const theme = useTheme();
@@ -63,12 +62,13 @@ export const DataTable: React.FC<IDataTable> = ({
 
   const isControlled =
     selectedItems !== undefined && onSelectionChange !== undefined;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [internalSelected, setInternalSelected] = useState<any[]>([]);
   const selected = isControlled ? selectedItems! : internalSelected;
-
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const isRowSelected = (row: any) =>
     selected.some((item) => item[rowKey] === row[rowKey]);
-
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleSelectionChange = (newSelected: any[]) => {
     if (isControlled) {
       onSelectionChange?.(newSelected);
@@ -89,6 +89,7 @@ export const DataTable: React.FC<IDataTable> = ({
     handleSelectionChange(newSelected);
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const toggleRowSelection = (row: any) => {
     if (isSingleSelect) {
       const alreadySelected = isRowSelected(row);
@@ -107,13 +108,13 @@ export const DataTable: React.FC<IDataTable> = ({
     displayData.length > 0 && displayData.every((row) => isRowSelected(row));
 
   return (
-    <Paper
-      elevation={disableShadow ? 0 : 3}
+    <Box
       sx={{
         borderRadius: 2,
         overflow: "hidden",
-        border: "1px solid",
-        borderColor: "divider",
+        border: withBorder ? "1px solid" : "none", // ⬅️ aqui
+        borderColor: withBorder ? "divider" : "transparent", // ⬅️ aqui
+        boxShadow: "none",
       }}
     >
       {chips && (
@@ -219,6 +220,6 @@ export const DataTable: React.FC<IDataTable> = ({
           />
         </Box>
       )}
-    </Paper>
+    </Box>
   );
 };
