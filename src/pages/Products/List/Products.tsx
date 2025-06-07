@@ -10,7 +10,7 @@ import { DeactivateModal } from "./components/DeactivateModal";
 import { FilterIcon } from "../../../components/FilterIcon";
 import { Filter } from "./components/Filter";
 import { Frame } from "../../../components/Frame";
-import { PageTitle } from "../../../components/PageTitleV2";
+import { Header } from "../../../components/Header";
 
 export const Products: React.FC = () => {
   const {
@@ -32,7 +32,7 @@ export const Products: React.FC = () => {
 
   return (
     <>
-      <PageTitle
+      <Header
         title="Produtos"
         searchBar={searchBar}
         buttons={

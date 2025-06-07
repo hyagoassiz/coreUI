@@ -13,7 +13,7 @@ import { BoxContainer, StyledBox, StyledContainer } from "./styles";
 import { ISeachBar } from "../../interfaces/ISearchBar";
 import ArrowBackIosTwoToneIcon from "@mui/icons-material/ArrowBackIosTwoTone";
 
-interface IToolbarContainer {
+interface IToolbarContainerProps {
   title?: string | ReactNode;
   buttons?: ReactNode;
   searchBar?: ISeachBar;
@@ -25,7 +25,7 @@ interface IToolbarContainer {
   contrastTextColor?: string;
 }
 
-export const ToolbarContainer: React.FC<IToolbarContainer> = ({
+export const ToolbarContainer: React.FC<IToolbarContainerProps> = ({
   title,
   buttons,
   backButton,

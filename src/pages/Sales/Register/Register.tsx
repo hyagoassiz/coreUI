@@ -3,8 +3,8 @@ import { Box, TextField, Grid, Button, Autocomplete } from "@mui/material";
 import { Products } from "./components/Products";
 import { NumericFormat } from "react-number-format";
 import { useRegister } from "./hooks/useRegister";
-import { PageTitle } from "../../../components/PageTitleV2";
 import { Frame } from "../../../components/Frame";
+import { Header } from "../../../components/Header";
 
 export const Register: React.FC = () => {
   const {
@@ -18,7 +18,7 @@ export const Register: React.FC = () => {
 
   return (
     <FormProvider {...saleForm}>
-      <PageTitle
+      <Header
         backButton={handleCancelSaleRegistration}
         title={`Vendas / ${saleForm.getValues("id") ? "Editar" : "Nova"} venda`}
         buttons={

@@ -3,14 +3,14 @@ import { ISeachBar } from "../../interfaces/ISearchBar";
 import { ReactNode } from "react";
 import { ToolbarContainer } from "../ToolbarContainer";
 
-interface IPageTitle {
+interface IHeaderProps {
   title: string;
   buttons?: ReactNode;
   searchBar?: ISeachBar;
   backButton?(): void;
 }
 
-export const PageTitle: React.FC<IPageTitle> = ({
+export const Header: React.FC<IHeaderProps> = ({
   title,
   buttons,
   searchBar,
