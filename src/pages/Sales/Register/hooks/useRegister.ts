@@ -8,17 +8,21 @@ import { useNotification } from "../../../../hooks/useNotification";
 import { useQueryGetSaleById } from "../../../../api/Sales/hooks/useQueryGetSaleById";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useMemo } from "react";
+import { ISaleForm } from "../interfaces";
 
 interface IUseRegisterReturn {
-  idEditMode: boolean;
-  saleForm: UseFormReturn<ISaleApi>;
-  statusOptions: ISaleApi["status"][];
-  calculateTotalSale(products: ISaleApi["produtos"], discount?: number): number;
+  isEditMode: boolean;
+  saleForm: UseFormReturn<ISaleForm>;
+  statusOptions: ISaleRegisterApi["status"][];
+  calculateTotalSale(
+    products: ISaleRegisterApi["produtos"],
+    discount?: number
+  ): number;
   handleCancelSaleRegistration(): void;
   submitSaleForm(): void;
 }
 export const useRegister = (): IUseRegisterReturn => {
-  const saleForm = useForm<ISaleApi>({
+  const saleForm = useForm<ISaleForm>({
     defaultValues: {
       data: dayjs().format("YYYY-MM-DD"),
       desconto: 0,
@@ -37,9 +41,10 @@ export const useRegister = (): IUseRegisterReturn => {
   const queryGetSaleById = useQuery({
     ...useQueryGetSaleById(id as string),
     enabled: !!id,
+    refetchOnWindowFocus: false,
   });
 
-  const statusOptions: ISaleApi["status"][] = [
+  const statusOptions: ISaleRegisterApi["status"][] = [
     {
       id: "ORCAMENTO",
       nome: "Orçamento",
@@ -50,7 +55,7 @@ export const useRegister = (): IUseRegisterReturn => {
     },
   ];
 
-  const idEditMode: boolean = useMemo(() => {
+  const isEditMode: boolean = useMemo(() => {
     if (!id) {
       return true;
     }
@@ -67,7 +72,7 @@ export const useRegister = (): IUseRegisterReturn => {
   }, [queryGetSaleById.isFetching]);
 
   function calculateTotalSale(
-    products: ISaleApi["produtos"],
+    products: ISaleRegisterApi["produtos"],
     discount?: number
   ): number {
     const _discount = discount ?? 0;
@@ -92,7 +97,7 @@ export const useRegister = (): IUseRegisterReturn => {
 
           const now = dayjs().toISOString();
 
-          const payload: ISaleApi = {
+          const payload: ISaleRegisterApi = {
             ...data,
             id: data.id ?? undefined,
             desconto: data.desconto ?? 0,
@@ -122,7 +127,7 @@ export const useRegister = (): IUseRegisterReturn => {
   }
 
   return {
-    idEditMode,
+    isEditMode,
     saleForm,
     statusOptions,
     calculateTotalSale,

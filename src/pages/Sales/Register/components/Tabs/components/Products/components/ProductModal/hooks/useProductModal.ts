@@ -1,17 +1,18 @@
 import { useQuery } from "@tanstack/react-query";
 import { useForm, useFormContext, UseFormReturn } from "react-hook-form";
-import { useQueryGetProducts } from "../../../../../../../../api/Products/hooks/useQueryGetProducts";
 import { useEffect, useId } from "react";
-import { useNotification } from "../../../../../../../../hooks/useNotification";
+import { useNotification } from "../../../../../../../../../../hooks/useNotification";
+import { useQueryGetProducts } from "../../../../../../../../../../api/Products/hooks/useQueryGetProducts";
+import { ISaleForm } from "../../../../../../../interfaces";
 
 interface IUseProductModalProps {
   onClose(): void;
-  product: ISaleApi["produtos"][0] | null;
+  product: ISaleRegisterApi["produtos"][0] | null;
 }
 
 interface IUseProductModalReturn {
   produtos: IProductResponseApi[] | undefined;
-  productForm: UseFormReturn<ISaleApi["produtos"][0]>;
+  productForm: UseFormReturn<ISaleRegisterApi["produtos"][0]>;
   calculateAndSetTotal(quantidade?: number, valorUnitario?: number): void;
   calculateAndSetUnitPrice(totalVenda: number): void;
   onSubmitProductForm(): void;
@@ -21,13 +22,13 @@ export const useProductModal = ({
   onClose,
   product,
 }: IUseProductModalProps): IUseProductModalReturn => {
-  const saleForm = useFormContext<ISaleApi>();
+  const saleForm = useFormContext<ISaleForm>();
 
   const { showSnackBar } = useNotification();
 
   const generatedId = useId();
 
-  const productForm = useForm<ISaleApi["produtos"][0]>({
+  const productForm = useForm<ISaleRegisterApi["produtos"][0]>({
     defaultValues: {
       quantidade: 1,
       valorUnitario: 0,
@@ -67,7 +68,7 @@ export const useProductModal = ({
   }
 
   function calculateTotalSale(
-    products: ISaleApi["produtos"],
+    products: ISaleRegisterApi["produtos"],
     discount?: number
   ): number {
     const _discount = discount ?? 0;
@@ -84,7 +85,7 @@ export const useProductModal = ({
     productForm.handleSubmit((data) => {
       const products = saleForm.getValues("produtos") ?? [];
 
-      const newProduct: ISaleApi["produtos"][0] = {
+      const newProduct: ISaleRegisterApi["produtos"][0] = {
         ...data,
         id: data.id ?? generatedId,
       };

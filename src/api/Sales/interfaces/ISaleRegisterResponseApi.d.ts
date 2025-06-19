@@ -1,11 +1,11 @@
-interface ISaleApi {
+interface ISaleRegisterResponseApi {
   id?: string;
   data: string;
   desconto: number;
   valorTotal: number;
   produtos: {
     id: string;
-    produto: IProductResponseApi;
+    produto: Pick<IProductResponseApi, "id" | "nome" | "codigo">;
     quantidade: number;
     valorUnitario: number;
     valorTotal: number;

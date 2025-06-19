@@ -2,7 +2,9 @@ import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "../../firebaseConfig";
 import { getAuth } from "firebase/auth";
 
-export async function getSaleById(idSale: string): Promise<ISaleApi> {
+export async function getSaleById(
+  idSale: string
+): Promise<ISaleRegisterResponseApi> {
   try {
     const auth = getAuth();
     const user = auth.currentUser;
@@ -22,7 +24,7 @@ export async function getSaleById(idSale: string): Promise<ISaleApi> {
     const doc = querySnapshot.docs[0];
     const data = doc.data();
 
-    const venda: ISaleApi = {
+    const venda: ISaleRegisterResponseApi = {
       id: doc.id,
       data: data.data,
       desconto: data.desconto,

@@ -1,36 +1,37 @@
 import { Dispatch, SetStateAction, useState } from "react";
 import { useFormContext, UseFormReturn } from "react-hook-form";
-import { useNotification } from "../../../../../../hooks/useNotification";
+import { useNotification } from "../../../../../../../../hooks/useNotification";
+import { ISaleForm } from "../../../../../interfaces";
 
 interface IUseProductsReturn {
   productModalState: {
     open: boolean;
-    product: ISaleApi["produtos"][0] | null;
+    product: ISaleRegisterApi["produtos"][0] | null;
   };
-  saleForm: UseFormReturn<ISaleApi>;
-  selectedProducts: ISaleApi["produtos"];
+  saleForm: UseFormReturn<ISaleForm>;
+  selectedProducts: ISaleRegisterApi["produtos"];
   handleAddProduct(): void;
   handleCloseProductModal(): void;
-  handleEditProduct(product: ISaleApi["produtos"][0]): void;
+  handleEditProduct(product: ISaleRegisterApi["produtos"][0]): void;
   deleteSelectedProducts(): void;
-  setSelectedProducts: Dispatch<SetStateAction<ISaleApi["produtos"]>>;
+  setSelectedProducts: Dispatch<SetStateAction<ISaleRegisterApi["produtos"]>>;
 }
 
 export const useProducts = (): IUseProductsReturn => {
   const [productModalState, setProductModalState] = useState<{
     open: boolean;
-    product: ISaleApi["produtos"][0] | null;
+    product: ISaleRegisterApi["produtos"][0] | null;
   }>({ open: false, product: null });
   const [selectedProducts, setSelectedProducts] = useState<
-    ISaleApi["produtos"]
+    ISaleRegisterApi["produtos"]
   >([]);
 
-  const saleForm = useFormContext<ISaleApi>();
+  const saleForm = useFormContext<ISaleForm>();
 
   const { showSnackBar } = useNotification();
 
   function calculateTotalSale(
-    products: ISaleApi["produtos"],
+    products: ISaleRegisterApi["produtos"],
     discount?: number
   ): number {
     const _discount = discount ?? 0;
@@ -51,7 +52,7 @@ export const useProducts = (): IUseProductsReturn => {
     setProductModalState({ open: false, product: null });
   }
 
-  function handleEditProduct(product: ISaleApi["produtos"][0]): void {
+  function handleEditProduct(product: ISaleRegisterApi["produtos"][0]): void {
     setProductModalState({ open: true, product: product });
   }
 

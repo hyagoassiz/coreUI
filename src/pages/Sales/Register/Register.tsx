@@ -1,14 +1,14 @@
 import { Controller, FormProvider } from "react-hook-form";
-import { Box, TextField, Grid, Button, Autocomplete } from "@mui/material";
-import { Products } from "./components/Products";
+import { TextField, Grid, Button, Autocomplete } from "@mui/material";
 import { NumericFormat } from "react-number-format";
 import { useRegister } from "./hooks/useRegister";
 import { Frame } from "../../../components/Frame";
 import { Header } from "../../../components/Header";
+import { RegisterTabs } from "./components/Tabs";
 
 export const Register: React.FC = () => {
   const {
-    idEditMode,
+    isEditMode,
     saleForm,
     statusOptions,
     calculateTotalSale,
@@ -27,7 +27,7 @@ export const Register: React.FC = () => {
               variant="contained"
               color="primary"
               type="submit"
-              disabled={!idEditMode}
+              disabled={!isEditMode}
               onClick={submitSaleForm}
             >
               Salvar
@@ -35,7 +35,7 @@ export const Register: React.FC = () => {
           </>
         }
       />
-      <Frame padding="32px 16px 16px 16px">
+      <Frame padding="32px 16px 32px 16px">
         <Grid container spacing={3}>
           <Grid item xs={12} sm={3}>
             <Controller
@@ -52,7 +52,7 @@ export const Register: React.FC = () => {
                   value={field.value ?? ""}
                   required
                   error={!!fieldState.error}
-                  disabled={!idEditMode}
+                  disabled={!isEditMode}
                   InputLabelProps={{ shrink: true }}
                 />
               )}
@@ -87,7 +87,7 @@ export const Register: React.FC = () => {
                   valueIsNumericString
                   type="tel"
                   inputMode="numeric"
-                  disabled={!idEditMode}
+                  disabled={!isEditMode}
                   error={!!formState.errors.desconto}
                 />
               )}
@@ -119,7 +119,7 @@ export const Register: React.FC = () => {
                   inputMode="numeric"
                   required
                   error={!!formState.errors.valorTotal}
-                  disabled={!idEditMode}
+                  disabled={!isEditMode}
                   InputProps={{ readOnly: true }}
                 />
               )}
@@ -151,38 +151,15 @@ export const Register: React.FC = () => {
                       error={!!fieldState.error}
                     />
                   )}
-                  disabled={!idEditMode}
+                  disabled={!isEditMode}
                   fullWidth
-                />
-              )}
-            />
-          </Grid>
-        </Grid>
-
-        <Box mt={4}>
-          <Products idEditMode={idEditMode} />
-        </Box>
-
-        <Grid spacing={3} mt={1}>
-          <Grid item xs={12}>
-            <Controller
-              name="observacao"
-              control={saleForm.control}
-              render={({ field, fieldState }) => (
-                <TextField
-                  label="Observação"
-                  color="info"
-                  fullWidth
-                  onChange={field.onChange}
-                  value={field.value ?? ""}
-                  disabled={!idEditMode}
-                  error={!!fieldState.error}
                 />
               )}
             />
           </Grid>
         </Grid>
       </Frame>
+      <RegisterTabs isEditMode={isEditMode} />
     </FormProvider>
   );
 };

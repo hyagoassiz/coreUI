@@ -23,11 +23,13 @@ export const AppRoutes = () => {
     <HashRouter>
       <Routes>
         <Route path={PATHS.AUTH.LOGIN} element={<LoginRoute />} />
+
         <Route path={PATHS.AUTH.CREATE} element={<CreateAccountRoute />} />
+
         <Route
           path={PATHS.AUTH.VERIFICATION}
           element={
-            <ProtectedRoute>
+            <ProtectedRoute permission="">
               <VerificationRoute />
             </ProtectedRoute>
           }
@@ -35,7 +37,7 @@ export const AppRoutes = () => {
         <Route
           path={PATHS.AUTH.INFO}
           element={
-            <ProtectedRoute>
+            <ProtectedRoute permission="">
               <PersonalInfoRoute />
             </ProtectedRoute>
           }
@@ -45,7 +47,7 @@ export const AppRoutes = () => {
           <Route
             path={PATHS.DASHBOARD.LIST}
             element={
-              <ProtectedRoute>
+              <ProtectedRoute permission="">
                 <DashboardRoute />
               </ProtectedRoute>
             }
@@ -54,7 +56,7 @@ export const AppRoutes = () => {
           <Route
             path={PATHS.SALES.LIST}
             element={
-              <ProtectedRoute>
+              <ProtectedRoute permission="">
                 <SalesRoute />
               </ProtectedRoute>
             }
@@ -63,7 +65,7 @@ export const AppRoutes = () => {
           <Route
             path={PATHS.SALES.REGISTER}
             element={
-              <ProtectedRoute>
+              <ProtectedRoute permission="">
                 <SalesRegisterRoute />
               </ProtectedRoute>
             }
@@ -72,7 +74,7 @@ export const AppRoutes = () => {
           <Route
             path={PATHS.SALES.EDIT}
             element={
-              <ProtectedRoute>
+              <ProtectedRoute permission="">
                 <SalesRegisterRoute />
               </ProtectedRoute>
             }
@@ -81,7 +83,7 @@ export const AppRoutes = () => {
           <Route
             path={PATHS.PRODUCTS.LIST}
             element={
-              <ProtectedRoute>
+              <ProtectedRoute permission="">
                 <ProductsRoute />
               </ProtectedRoute>
             }
@@ -90,7 +92,7 @@ export const AppRoutes = () => {
           <Route
             path={PATHS.ABOUT.LIST}
             element={
-              <ProtectedRoute>
+              <ProtectedRoute permission="">
                 <AboutRoute />
               </ProtectedRoute>
             }
@@ -99,7 +101,7 @@ export const AppRoutes = () => {
           <Route
             path={PATHS.SETTINGS.LIST}
             element={
-              <ProtectedRoute>
+              <ProtectedRoute permission="">
                 <SettingsRoute />
               </ProtectedRoute>
             }

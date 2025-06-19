@@ -1,4 +1,4 @@
-import { IDataTableColumns } from "../../../../../../interfaces";
+import { IDataTableColumns } from "../../../../../../../../interfaces";
 
 export const productColumns: IDataTableColumns[] = [
   { key: "nome", label: "Nome" },

@@ -1,16 +1,16 @@
 import { MenuItem, Typography } from "@mui/material";
 import { NumericFormat } from "react-number-format";
-import { MoreOptions } from "../../../../../../components/MoreOptions";
+import { MoreOptions } from "../../../../../../../../components/MoreOptions";
 
 interface IMountData {
-  products: ISaleApi["produtos"] | undefined;
-  idEditMode: boolean;
-  handleEditProduct(product: ISaleApi["produtos"][0]): void;
+  products: ISaleRegisterApi["produtos"] | undefined;
+  isEditMode: boolean;
+  handleEditProduct(product: ISaleRegisterApi["produtos"][0]): void;
 }
 
 export function mountData({
   products,
-  idEditMode,
+  isEditMode,
   handleEditProduct,
 }: IMountData): any[] {
   if (products?.length) {
@@ -45,7 +45,7 @@ export function mountData({
       ),
       options: (
         <>
-          <MoreOptions disabled={!idEditMode}>
+          <MoreOptions disabled={!isEditMode}>
             <MenuItem
               onClick={() => {
                 handleEditProduct(product);

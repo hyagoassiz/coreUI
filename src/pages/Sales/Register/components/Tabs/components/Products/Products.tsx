@@ -1,17 +1,17 @@
 import { Button } from "@mui/material";
-import { DataTable } from "../../../../../components/DataTable/DataTable";
 import { productColumns } from "./constants/constants";
 import { mountData } from "./utils/mountData";
-import { ToolbarContainer } from "../../../../../components/ToolbarContainer";
 import { Add, Delete } from "@mui/icons-material";
 import { ProductModal } from "./components/ProductModal";
 import { useProducts } from "./hooks/useProducts";
+import { ToolbarContainer } from "../../../../../../../components/ToolbarContainer";
+import { DataTable } from "../../../../../../../components/DataTable/DataTable";
 
 interface IProductsProps {
-  idEditMode: boolean;
+  isEditMode: boolean;
 }
 
-export const Products: React.FC<IProductsProps> = ({ idEditMode }) => {
+export const Products: React.FC<IProductsProps> = ({ isEditMode }) => {
   const {
     productModalState,
     saleForm,
@@ -35,7 +35,7 @@ export const Products: React.FC<IProductsProps> = ({ idEditMode }) => {
               color="primary"
               variant="outlined"
               onClick={handleAddProduct}
-              disabled={!idEditMode}
+              disabled={!isEditMode}
             >
               Adicionar
             </Button>
@@ -44,7 +44,7 @@ export const Products: React.FC<IProductsProps> = ({ idEditMode }) => {
               startIcon={<Delete />}
               color="primary"
               variant="outlined"
-              disabled={selectedProducts.length === 0 || !idEditMode}
+              disabled={selectedProducts.length === 0 || !isEditMode}
               onClick={deleteSelectedProducts}
             >
               Excluir
@@ -54,17 +54,18 @@ export const Products: React.FC<IProductsProps> = ({ idEditMode }) => {
       />
       <DataTable
         disablePagination
-        selectionMode={idEditMode ? "multiple" : undefined}
+        selectionMode={isEditMode ? "multiple" : undefined}
         columns={productColumns}
         data={mountData({
           products: saleForm.getValues("produtos"),
           handleEditProduct,
-          idEditMode,
+          isEditMode,
         })}
         textForEmptyData="Nenhum produto selecionado."
         selectedItems={selectedProducts}
         onSelectionChange={setSelectedProducts}
-        tableHeight={190}
+        withBorder
+        tableHeight={220}
       />
 
       {productModalState.open && (

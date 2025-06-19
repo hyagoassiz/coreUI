@@ -9,11 +9,11 @@ import {
 } from "@mui/material";
 import { useProductModal } from "./hooks/useProductModal";
 import { NumericFormat } from "react-number-format";
-import { Modal } from "../../../../../../../components/Modal";
+import { Modal } from "../../../../../../../../../components/Modal";
 
 export interface IProductModalProps {
   open: boolean;
-  product: ISaleApi["produtos"][0] | null;
+  product: ISaleRegisterApi["produtos"][0] | null;
   onClose(): void;
 }
 
