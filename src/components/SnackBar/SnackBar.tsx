@@ -8,8 +8,8 @@ export const SnackBar: React.FC = () => {
     <>
       <MuiSnackBar
         open={snackBar.open}
-        anchorOrigin={{ vertical: "top", horizontal: "right" }}
-        sx={{ marginTop: "55px" }}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+        // sx={{ marginTop: "55px" }}
       >
         <Alert
           severity={`${snackBar.type}`}

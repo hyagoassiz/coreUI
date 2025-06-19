@@ -1,7 +1,7 @@
 import { UseFormReturn } from "react-hook-form";
-import { IProductForm } from "./IProductForm";
+import { IProductPayloadApi } from "./IProductPayloadApi";
 
 export interface IUseProductModalReturn {
-  productForm: UseFormReturn<IProductForm>;
+  productForm: UseFormReturn<IProductPayloadApi>;
   submitProductForm(): void;
 }

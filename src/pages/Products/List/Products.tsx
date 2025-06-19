@@ -2,7 +2,6 @@ import { Button, Chip } from "@mui/material";
 import { productColumns } from "./constants/constants";
 import { mountData } from "./utils/mountData";
 import { Add } from "@mui/icons-material";
-import { PageTitle } from "../../../components/PageTitle";
 import { ToolbarContainer } from "../../../components/ToolbarContainer";
 import { DataTable } from "../../../components/DataTable/DataTable";
 import { useList } from "./hooks/useList";
@@ -10,6 +9,8 @@ import { ProductModal } from "./components/ProductModal";
 import { DeactivateModal } from "./components/DeactivateModal";
 import { FilterIcon } from "../../../components/FilterIcon";
 import { Filter } from "./components/Filter";
+import { Frame } from "../../../components/Frame";
+import { Header } from "../../../components/Header";
 
 export const Products: React.FC = () => {
   const {
@@ -31,46 +32,52 @@ export const Products: React.FC = () => {
 
   return (
     <>
-      <PageTitle
+      <Header
         title="Produtos"
-        subTitle="Gerencie o cadastro dos seus produtos"
-      />
-
-      <ToolbarContainer
-        buttons={
-          <>
-            <Button
-              startIcon={<Add />}
-              color="primary"
-              variant="contained"
-              onClick={toggleCreateProductModal}
-            >
-              Novo
-            </Button>
-            <FilterIcon filterCount={filterCount} onClick={toggleFilter} />
-          </>
-        }
         searchBar={searchBar}
+        buttons={
+          <FilterIcon filterCount={filterCount} onClick={toggleFilter} />
+        }
       />
 
-      <DataTable
-        chips={
-          filterCount > 0 && (
-            <Chip
-              label="Inativos"
-              onDelete={() => setProductListPayload({ ativo: true })}
-            />
-          )
-        }
-        columns={productColumns}
-        data={mountData({
-          products,
-          handleActivateProduct,
-          handleDeactivateProduct,
-          handleEditProduct,
-        })}
-        textForEmptyData="Nenhum produto encontrado."
-      />
+      <Frame>
+        <ToolbarContainer
+          title={`Total de produtos (${products?.length ?? 0})`}
+          showTitleDivider
+          showDividers
+          buttons={
+            <>
+              <Button
+                startIcon={<Add />}
+                color="primary"
+                variant="outlined"
+                onClick={toggleCreateProductModal}
+              >
+                Novo
+              </Button>
+            </>
+          }
+        />
+
+        <DataTable
+          chips={
+            filterCount > 0 && (
+              <Chip
+                label="Inativos"
+                onDelete={() => setProductListPayload({ ativo: true })}
+              />
+            )
+          }
+          columns={productColumns}
+          data={mountData({
+            products,
+            handleActivateProduct,
+            handleDeactivateProduct,
+            handleEditProduct,
+          })}
+          textForEmptyData="Nenhum produto encontrado."
+        />
+      </Frame>
 
       {modalProductState.open && (
         <ProductModal

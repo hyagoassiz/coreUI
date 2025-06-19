@@ -33,7 +33,7 @@ export async function getProducts(
         codigo: produtoData.codigo,
         valor: produtoData.valor,
         ativo: produtoData.ativo,
-        usuario: produtoData.usuario,
+        quantidade: produtoData.quantidade,
         createdAt: produtoData.createdAt,
         updatedAt: produtoData.updatedAt,
       });

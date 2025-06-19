@@ -2,9 +2,9 @@ interface IProductResponseApi {
   id: string;
   nome: string;
   codigo: string;
-  valor: string;
+  valor: number;
   ativo: boolean;
-  usuario: string;
+  quantidade: number;
   createdAt: string;
   updatedAt: string;
 }

@@ -8,12 +8,19 @@ import * as PATHS from "../../../routes/paths";
 import { IUser } from "../../../interfaces";
 import { sendEmailVerificationToUser } from "../../../api/Auth/sendEmailVerificationToUser";
 import { useLoading } from "../../../hooks/useLoading";
+import { usePermission } from "../../../hooks/usePermission";
 
-interface IUseLogin {
+interface IUseLoginProps {
+  permission: string;
+}
+
+interface IUseLoginReturn {
   signed: boolean;
 }
 
-export const useProtectedRoute = (): IUseLogin => {
+export const useProtectedRoute = ({
+  permission,
+}: IUseLoginProps): IUseLoginReturn => {
   const [signed, setSigned] = useState<boolean>(false);
 
   const dispatch = useDispatch();
@@ -23,6 +30,8 @@ export const useProtectedRoute = (): IUseLogin => {
   const location = useLocation();
 
   const { setLoading } = useLoading();
+
+  const { checkPermission } = usePermission();
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -40,7 +49,8 @@ export const useProtectedRoute = (): IUseLogin => {
     });
 
     return () => unsubscribe();
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [location.pathname]);
 
   function extractUserData(user: User): IUser {
     return {
@@ -70,6 +80,11 @@ export const useProtectedRoute = (): IUseLogin => {
 
     if (!user.displayName) {
       navigate(PATHS.AUTH.INFO);
+      return;
+    }
+
+    if (!checkPermission(permission)) {
+      navigate(PATHS.AUTH.LOGIN);
       return;
     }
 

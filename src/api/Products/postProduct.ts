@@ -4,6 +4,7 @@ import {
   doc,
   DocumentReference,
   updateDoc,
+  getDoc,
 } from "firebase/firestore";
 import { db } from "../../firebaseConfig";
 import { getAuth } from "firebase/auth";
@@ -24,11 +25,23 @@ export async function postProduct(
   try {
     if (id) {
       const contaRef = doc(db, "produto", id);
-      await updateDoc(contaRef, updateData);
+      const existingDoc = await getDoc(contaRef);
+
+      if (!existingDoc.exists()) {
+        throw new Error("Produto não encontrado.");
+      }
+
+      const currentData = existingDoc.data();
+      await updateDoc(contaRef, {
+        ...updateData,
+        ativo: currentData.ativo,
+      });
+
       return contaRef;
     } else {
       const newDocRef = await addDoc(collection(db, "produto"), {
         ...updateData,
+        ativo: true,
         usuario,
       });
       return newDocRef;

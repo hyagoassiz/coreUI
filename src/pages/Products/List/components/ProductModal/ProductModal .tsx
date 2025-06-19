@@ -1,11 +1,5 @@
 import { Controller } from "react-hook-form";
-import {
-  Box,
-  TextField,
-  FormControlLabel,
-  Switch,
-  Button,
-} from "@mui/material";
+import { Box, TextField, Button } from "@mui/material";
 import { Modal } from "../../../../../components/Modal";
 import { NumericFormat } from "react-number-format";
 import { useProductModal } from "./hooks/useProductModal";
@@ -45,7 +39,6 @@ export const ProductModal: React.FC<IProductModalProps> = ({
           render={({ field, formState }) => (
             <TextField
               {...field}
-              variant="standard"
               label="Nome do produto"
               fullWidth
               required
@@ -62,7 +55,6 @@ export const ProductModal: React.FC<IProductModalProps> = ({
             <TextField
               {...field}
               label="Código/SKU"
-              variant="standard"
               fullWidth
               required
               error={!!formState.errors.codigo}
@@ -92,7 +84,6 @@ export const ProductModal: React.FC<IProductModalProps> = ({
               decimalScale={2}
               fixedDecimalScale
               prefix="R$ "
-              variant="standard"
               valueIsNumericString
               type="tel"
               inputMode="numeric"
@@ -110,18 +101,30 @@ export const ProductModal: React.FC<IProductModalProps> = ({
         />
 
         <Controller
-          name="ativo"
+          name="quantidade"
           control={productForm.control}
-          render={({ field }) => (
-            <FormControlLabel
-              control={
-                <Switch
-                  size="medium"
-                  checked={field.value ?? true}
-                  onChange={(e) => field.onChange(e.target.checked)}
-                />
-              }
-              label={field.value ? "Ativo" : "Inativo"}
+          rules={{
+            required: true,
+          }}
+          render={({ field, formState }) => (
+            <NumericFormat
+              value={field.value}
+              onValueChange={(values) => {
+                const { floatValue } = values;
+                field.onChange(floatValue ?? "");
+              }}
+              customInput={TextField}
+              label="Quantidade em estoque"
+              fullWidth
+              allowNegative={false}
+              thousandSeparator="."
+              decimalSeparator=","
+              decimalScale={0}
+              valueIsNumericString
+              inputMode="numeric"
+              required
+              onFocus={(e) => e.target.select()}
+              error={!!formState.errors.quantidade}
             />
           )}
         />
